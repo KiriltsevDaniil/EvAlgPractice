@@ -1,5 +1,8 @@
 from random import uniform
+from evpy.commands.genetic_operators.wrappers.command import Command
 
+
+@Command
 def intermediate_recombination(parent1, parent2, n_children=2, d=.25):
     assert d >= 0, "d must be positive or 0"
     masks = [[uniform(-d, 1 + d) for x in parent1] for i in range(n_children)]
@@ -12,6 +15,8 @@ def intermediate_recombination(parent1, parent2, n_children=2, d=.25):
     parents = [parent1, parent2]
     return parents, children
 
+
+@Command
 def linear_recombination(parent1, parent2, n_children=2, d=.25):
     assert d >= 0, "d must be positive or 0"
     alphas = [uniform(-d, 1 + d) for i in range(n_children)]

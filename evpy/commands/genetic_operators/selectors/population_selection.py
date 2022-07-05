@@ -1,17 +1,24 @@
 from math import exp
 from random import random, sample
+from evpy.commands.genetic_operators.wrappers.command import Command
 
+
+@Command
 def truncation_selection(weighted_population, newpop_size):
     weighted_population.sort(key=lambda x: x[1], reverse=True)
     new_population = [x[0] for x in weighted_population[:newpop_size-1]]
     return new_population
 
+
+@Command
 def elite_selection(weighted_population, auxiliary_selection, elite_size, newpop_size):
     weighted_population.sort(key=lambda x: x[1], reverse=True)
     new_population = [x[0] for x in weighted_population[:elite_size-1]]
     new_population += auxiliary_selection(weighted_population[:elite_size-1], newpop_size - elite_size)
     return new_population
 
+
+@Command
 def bolzman_selection(weighted_population, newpop_size, temperature=2):
     new_population = []
     while len(new_population < newpop_size):

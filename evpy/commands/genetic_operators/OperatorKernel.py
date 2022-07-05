@@ -4,6 +4,7 @@ import evpy.commands.genetic_operators.mutators.rvmutators as rvmutators
 import evpy.commands.genetic_operators.recombination.rvrecombination as rvrecombination
 import evpy.commands.genetic_operators.recombination.discrete as discrete
 import evpy.commands.genetic_operators.selectors.parent_selection as parent_selection
+from evpy.commands.genetic_operators.wrappers.command import Command
 
 crossover_opts = {
     "single_point_crossover": crossover.single_point_crossover,
