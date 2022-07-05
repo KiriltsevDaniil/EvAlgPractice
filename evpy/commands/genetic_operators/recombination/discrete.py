@@ -1,5 +1,8 @@
 from random import randint
+from evpy.commands.genetic_operators.wrappers.command import Command
 
+
+@Command
 def discrete_recombination(parent1, parent2, n_children=2):
     '''a.k.a. uniform crossover'''
     masks = [[randint(1, 2) for x in parent1] for i in range(n_children)]
