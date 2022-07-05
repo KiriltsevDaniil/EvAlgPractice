@@ -1,4 +1,3 @@
-from audioop import reverse
 from math import exp
 from random import random, sample
 

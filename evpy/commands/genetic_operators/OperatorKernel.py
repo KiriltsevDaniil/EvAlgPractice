@@ -1,9 +1,9 @@
-import genetic_operators.mutators.bimutators as bimutators
-import genetic_operators.recombination.crossover as crossover
-import genetic_operators.mutators.rvmutators as rvmutators
-import genetic_operators.recombination.rvrecombination as rvrecombination
-import genetic_operators.recombination.discrete as discrete
-import genetic_operators.selectors.parent_selection as parent_selection
+import evpy.commands.genetic_operators.mutators.bimutators as bimutators
+import evpy.commands.genetic_operators.recombination.crossover as crossover
+import evpy.commands.genetic_operators.mutators.rvmutators as rvmutators
+import evpy.commands.genetic_operators.recombination.rvrecombination as rvrecombination
+import evpy.commands.genetic_operators.recombination.discrete as discrete
+import evpy.commands.genetic_operators.selectors.parent_selection as parent_selection
 
 crossover_opts = {
     "single_point_crossover": crossover.single_point_crossover,
