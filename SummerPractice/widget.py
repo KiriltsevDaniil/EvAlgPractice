@@ -9,19 +9,6 @@ from PySide2.QtCore import QFile
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
-class Dialog(QDialog):
-    def __init__(self):
-        super(Dialog, self).__init__()
-        self.load_ui()
-
-    def load_ui(self):
-        loader = QUiLoader()
-        path = os.fspath(Path(__file__).resolve().parent / "dialog.ui")
-        ui_file = QFile(path)
-        ui_file.open(QFile.ReadOnly)
-        loader.load(ui_file, self)
-        ui_file.close()
-
 class Widget(QWidget): # QMainWindow ???
     def __init__(self):
         super(Widget, self).__init__()
@@ -61,6 +48,12 @@ class Widget(QWidget): # QMainWindow ???
         loader.load(ui_file, self)
         ui_file.close()
 
+        path = os.fspath(Path(__file__).resolve().parent / "dialog.ui")
+        ui_file = QFile(path)
+        ui_file.open(QFile.ReadOnly)
+        self.Dialog = loader.load(ui_file, self)
+        ui_file.close()
+
     def maximize(self):
         if not self.isMaximized():
             self.showMaximized()
@@ -77,6 +70,7 @@ class Widget(QWidget): # QMainWindow ???
         self.ProgressBar.setValue(percentage)
 
     def testfunc(self):
+        self.Dialog.exec_()
         if not self.inExecution: # start execution
             if self.StepBox.isChecked():
                 self.StepBtn.setFlat(False)
