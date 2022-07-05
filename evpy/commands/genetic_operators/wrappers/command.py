@@ -8,7 +8,7 @@ class Command(object):
     def __init__(self, function):
         self.function = function
 
-    def __call__(self, **kwargs):
+    def __call__(self, *args, **kwargs):
         # (!) as of now parsing as positional arguments, need to figure out how to parse as named in case of abstract
         # function
 
