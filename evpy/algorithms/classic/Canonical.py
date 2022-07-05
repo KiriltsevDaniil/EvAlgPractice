@@ -1,4 +1,4 @@
-from genetic_operators.OperatorKernel import KernelBox
+from evpy.commands.genetic_operators.OperatorKernel import KernelBox
 from random import randint, sample, random
 
 class Canonical:
