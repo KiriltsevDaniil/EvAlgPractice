@@ -8,10 +8,10 @@ from evpy.commands.genetic_operators.wrappers.command import Command
 
 crossover_opts = {
     "single_point_crossover": crossover.single_point_crossover,
-    "double_point_crossover": crossover.double_point_crossover, 
+    "double_point_crossover": crossover.double_point_crossover,
     "multi_point_crossover": crossover.multi_point_crossover,
     "shuffler_crossover": crossover.shuffler_crossover, 
-    "single_point_rsc": crossover.single_point_crossover
+    "single_point_rsc": crossover.single_point_rsc
 }
 discrete_opts = {
     "discrete": discrete.discrete_recombination
