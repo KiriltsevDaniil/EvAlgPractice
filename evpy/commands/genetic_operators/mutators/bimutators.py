@@ -1,5 +1,6 @@
 from random import randint, random
 
+
 def point_mutation(individual, p_mut=0.5, points=1):
     for i in range(points):
         chosen = randint(0, len(individual)-1)
