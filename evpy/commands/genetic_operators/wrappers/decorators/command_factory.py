@@ -21,3 +21,6 @@ class CommandFactory:
         else:
             if self.__available.check_category(category):
                 return self.__factory(self.__available.get_command(category))
+
+    def build_custom(self, func):
+        return self.__factory(func)
