@@ -1,15 +1,12 @@
 from random import randint, sample, random
-from evpy.commands.genetic_operators.wrappers.command import Command
 
 
 # Structure: we take dirty/clean population, we return lists of pairs of parents
-@Command
 def random_couple(weighted_population):
     parents = sample(weighted_population, k=2)
     return [x[0] for x in parents]
 
 
-@Command
 def panmixia(weighted_population):
     parents = [[x[0], weighted_population[randint(len(weighted_population) - 1)]][0]
         for x in weighted_population]
@@ -17,7 +14,6 @@ def panmixia(weighted_population):
     return parents
 
 
-@Command
 def outbreeding(weighted_population, metric, ammount=1):
     population = [x[0] for x in weighted_population]
     chosens = [randint(0, len(population) - 1) for x in range(ammount)]
@@ -33,7 +29,6 @@ def outbreeding(weighted_population, metric, ammount=1):
     return parents
 
 
-@Command
 def inbreeding(weighted_population, metric, ammount=1):
     population = [x[0] for x in weighted_population]
     chosens = [randint(0, len(population) - 1) for x in range(ammount)]
@@ -49,7 +44,6 @@ def inbreeding(weighted_population, metric, ammount=1):
     return parents
 
 
-@Command
 def tournament_selection(weighted_population, tournament_k=2):
     winners = []
     ordered_population = [[weighted_population[i][0], weighted_population[i][1], i] for i 
@@ -64,7 +58,6 @@ def tournament_selection(weighted_population, tournament_k=2):
     return panmixia(winners)
 
 
-@Command
 def fitness_proportional_selection(weighted_population):
     ordered_population = [x + [i] for i, x in enumerate(weighted_population)]
     cumulative_fitness = sum([x[1] for x in ordered_population])

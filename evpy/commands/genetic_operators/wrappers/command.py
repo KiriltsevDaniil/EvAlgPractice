@@ -1,5 +1,5 @@
 # factory method for Command
-def make_com(function):
+def make_command(function):
     return Command(function)
 
 
@@ -8,11 +8,14 @@ class Command(object):
     def __init__(self, function):
         self.function = function
 
-    def __call__(self, **kwargs):
+    def __call__(self, *args, **kwargs):
         # (!) as of now parsing as positional arguments, need to figure out how to parse as named in case of abstract
         # function
 
-        if len(kwargs.keys()) == 1:
+        if len(kwargs.keys()) < 1:
+            return -1
+
+        elif len(kwargs.keys()) == 1:
             par_1 = list(kwargs.values())[0]
             return self.function(par_1)
 
