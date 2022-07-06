@@ -11,7 +11,7 @@ def group_mutation(individual, p_mut=0.5):
     chain_length = randint(2, len(individual) - 1)
     if random() <= p_mut:
         while chain_iterator <= len(individual) - 1 and chain_length != 0:
-            point_mutation[chain_iterator] = point_mutation[chain_iterator] ^ 1
+            individual[chain_iterator] = individual[chain_iterator] ^ 1
             chain_iterator += 1
             chain_length -= 1
     return individual
