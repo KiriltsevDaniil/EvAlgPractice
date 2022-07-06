@@ -18,9 +18,9 @@ from evpy.commands.genetic_operators.selectors.parent_selection import random_co
 class CommandFactory:
     def __init__(self, factory_func=make_command):
 
-        self.factory = factory_func
+        self.__factory = factory_func
 
-        self.products = {
+        self.__products = {
             "recombination": {"single_point_crossover": single_point_crossover,
                               "double_point_crossover": double_point_crossover,
                               "multi_point_crossover": multi_point_crossover,
@@ -56,14 +56,14 @@ class CommandFactory:
         }
 
     def add_category(self, category: str, products: dict):
-        self.products[category] = products
+        self.__products[category] = products
 
     def get_categories(self):
-        return self.products.keys()
+        return self.__products.keys()
 
     def build_command(self, tag: str, func=""):
-        if tag in self.products:
-            if func in self.products[tag]:
-                return self.factory(self.products[tag][func])
+        if tag in self.__products:
+            if func in self.__products[tag]:
+                return self.__factory(self.__products[tag][func])
             else:
-                return self.factory(sample(list(self.products[tag].values()), k=1))
+                return self.__factory(sample(list(self.__products[tag].values()), k=1))
