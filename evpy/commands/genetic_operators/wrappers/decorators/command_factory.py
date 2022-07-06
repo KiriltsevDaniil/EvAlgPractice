@@ -1,5 +1,5 @@
-from evpy.commands.genetic_operators.wrappers.command import make_command
-from evpy.commands.genetic_operators.wrappers.command_list import CommandList
+from evpy.commands.genetic_operators.wrappers.decorators.command import make_command
+from evpy.commands.genetic_operators.wrappers.decorators.command_list import CommandList
 
 
 class CommandFactory:
