@@ -1,8 +1,6 @@
 from random import randint, sample
-from evpy.commands.genetic_operators.wrappers.command import Command
 
 
-@Command
 def single_point_crossover(parent1, parent2):
     point = randint(0, len(parent1)-1)
     children = [parent1[:point] + parent2[point:], parent2[:point] + parent1[point:]]
@@ -10,7 +8,6 @@ def single_point_crossover(parent1, parent2):
     return parents, children
 
 
-@Command
 def double_point_crossover(parent1, parent2):
     tmp1, tmp2 = parent1, parent2
     for i in range(2):
@@ -20,7 +17,6 @@ def double_point_crossover(parent1, parent2):
     return parents, tmps
 
 
-@Command
 def multi_point_crossover(parent1, parent2, n=3):
     tmp1, tmp2 = parent1, parent2
     for i in range(n):
@@ -30,7 +26,6 @@ def multi_point_crossover(parent1, parent2, n=3):
     return parents, tmps
 
 
-@Command
 def shuffler_crossover(parent1, parent2, parent_shuffle_k=5, child_shuffle_k=5):
     for _ in range(parent_shuffle_k):
         point = randint(0, len(parent1) - 1)
@@ -45,7 +40,6 @@ def shuffler_crossover(parent1, parent2, parent_shuffle_k=5, child_shuffle_k=5):
     return parents, children
 
 
-@Command
 def single_point_rsc(parent1, parent2):
     '''rsc - reduced surrogate crossover'''
     rs_points = [i for i in range(len(parent1)) if parent1[i] != parent2[i]]
