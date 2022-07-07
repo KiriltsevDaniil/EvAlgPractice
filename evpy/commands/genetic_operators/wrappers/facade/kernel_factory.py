@@ -1,8 +1,6 @@
 from evpy.commands.genetic_operators.wrappers.facade.kernel import make_kernel
 from evpy.commands.genetic_operators.wrappers.decorators.command_factory import CommandFactory
 
-from evpy.commands.genetic_operators.mutators.bimutators import exchange_mutation
-
 
 class KernelFactory:
     def __init__(self, factory_func=make_kernel):
