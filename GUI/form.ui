@@ -47,10 +47,18 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-radius: 20px;
-background-color:  #252984;
-color: white;
-font: bold 25px;</string>
+    <string notr="true">QPushButton {
+	border-radius: 20px;
+	background-color:  #252984;
+	color: white;
+	font: bold 25px;
+}
+QPushButton:hover {
+	border-radius: 20px;
+	background-color:  #393c87;
+	color: white;
+	font: bold 25px;
+}</string>
    </property>
    <property name="text">
     <string>Run</string>
@@ -78,6 +86,13 @@ border-radius: 20px;
 background-color:  #5E5F70;
 color: white;
 font: bold 25px;
+}
+
+QPushButton:hover {
+	border-radius: 20px;
+	background-color:  #393c87;
+	color: white;
+	font: bold 25px;
 }</string>
    </property>
    <property name="text">
@@ -106,6 +121,11 @@ font: bold 25px;
     <string notr="true">QCheckBox {
 	font: bold 20px;
 	color: white;
+}
+
+QCheckBox:hover {
+	font: bold 20px;
+	color: #85ab85;
 }
 
 QCheckBox::indicator:unchecked {
@@ -270,26 +290,6 @@ QScrollBar::sub-page:vertical
   <widget class="QPushButton" name="TrayBtn">
    <property name="geometry">
     <rect>
-     <x>1000</x>
-     <y>10</y>
-     <width>31</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-	color: white;
-	background: rgb(3, 4, 19);
-	border: 0px solid rgb(3, 4, 19);;
-}</string>
-   </property>
-   <property name="text">
-    <string>_</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="MaximizeBtn">
-   <property name="geometry">
-    <rect>
      <x>1040</x>
      <y>10</y>
      <width>31</width>
@@ -304,7 +304,7 @@ QScrollBar::sub-page:vertical
 }</string>
    </property>
    <property name="text">
-    <string>[_]</string>
+    <string>_</string>
    </property>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
@@ -336,7 +336,7 @@ QScrollBar::sub-page:vertical
        <number>0</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="PopulationLayout">
+       <layout class="QVBoxLayout" name="PopulationLayout" stretch="20,197">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -357,48 +357,47 @@ QScrollBar::sub-page:vertical
          </widget>
         </item>
         <item>
-         <widget class="QTreeView" name="treeView_2">
+         <widget class="QScrollArea" name="PopulationBox">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>197</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>197</height>
+           </size>
+          </property>
           <property name="styleSheet">
-           <string notr="true">QTreeView
-{
+           <string notr="true">
 	background: #121828;
 	border: none;
-}
-
-QScrollBar:vertical
-{
-	background: #1D253D;
-	border: 0px solid red;
-	border-radius: 7px;
-}
-
-QScrollBar::handle:vertical
-{
-	background: #C6C8CE;
-	border: 0px solid red;
-	border-radius: 7px;
-}
-
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical,
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical
-{
-	height: 0px;
-}</string>
+</string>
           </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAsNeeded</enum>
+          <property name="widgetResizable">
+           <bool>true</bool>
           </property>
-          <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustToContents</enum>
-          </property>
-          <attribute name="headerVisible">
-           <bool>false</bool>
-          </attribute>
+          <widget class="QWidget" name="scrollAreaWidgetContents_3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>235</width>
+             <height>197</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -425,48 +424,26 @@ QScrollBar::sub-page:vertical
          </widget>
         </item>
         <item>
-         <widget class="QTreeView" name="treeView">
+         <widget class="QScrollArea" name="VariablesBox">
           <property name="styleSheet">
-           <string notr="true">QTreeView
-{
+           <string notr="true">
 	background: #121828;
 	border: none;
-}
-
-QScrollBar:vertical
-{
-	background: #1D253D;
-	border: 0px solid red;
-	border-radius: 7px;
-}
-
-QScrollBar::handle:vertical
-{
-	background: #C6C8CE;
-	border: 0px solid red;
-	border-radius: 7px;
-}
-
-QScrollBar::add-line:vertical,
-QScrollBar::sub-line:vertical,
-QScrollBar::add-page:vertical,
-QScrollBar::sub-page:vertical
-{
-	height: 0px;
-}</string>
+</string>
           </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAsNeeded</enum>
+          <property name="widgetResizable">
+           <bool>true</bool>
           </property>
-          <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-          <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustToContents</enum>
-          </property>
-          <attribute name="headerVisible">
-           <bool>false</bool>
-          </attribute>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>235</width>
+             <height>197</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -475,56 +452,60 @@ QScrollBar::sub-page:vertical
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_2">
+  <widget class="QPushButton" name="ImportBtn">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>332</width>
+     <width>61</width>
      <height>31</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="MenuBar">
-    <item>
-     <widget class="QPushButton" name="FileBtn">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>File</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="HelpBtn">
-      <property name="text">
-       <string>Save</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="SaveBtn">
-      <property name="focusPolicy">
-       <enum>Qt::WheelFocus</enum>
-      </property>
-      <property name="text">
-       <string>Help</string>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <property name="autoRepeat">
-       <bool>false</bool>
-      </property>
-      <property name="autoExclusive">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-   </layout>
-   <zorder>FileBtn</zorder>
-   <zorder>HelpBtn</zorder>
-   <zorder>SaveBtn</zorder>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+border: 1px solid black;
+background: #1D253D;
+color: white;
+font: bold 15px;
+}
+QPushButton:hover{
+border: 1px solid black;
+background: #262d42;
+color: white;
+font: bold 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Import</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="HelpBtn">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>0</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+border: 1px solid black;
+background: #1D253D;
+color: white;
+font: bold 15px;
+}
+
+QPushButton:hover{
+border: 1px solid black;
+background: #262d42;
+color: white;
+font: bold 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
   </widget>
  </widget>
  <resources/>
