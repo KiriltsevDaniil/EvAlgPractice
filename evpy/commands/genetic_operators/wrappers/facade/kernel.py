@@ -1,4 +1,6 @@
-from evpy.commands.genetic_operators.wrappers.decorators.command_factory import CommandFactory
+
+def make_kernel(mutator_func=None, recomb_func=None, pop_func=None, parent_func=None):
+    return Kernel(mutator_func, recomb_func, pop_func, parent_func)
 
 
 class Kernel:
