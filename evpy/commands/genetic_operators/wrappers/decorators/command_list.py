@@ -80,13 +80,15 @@ class CommandList:
             self.__commands[category] = dict()
             self.__commands[category][name] = command
 
-    def get_command(self, category: str, name=None):
-        if category in self.__commands:
-            if not name:
-                return sample(list(self.__commands[category].values()), k=1)[0]
+    def get_command(self, name: str):
 
+        for category in self.__commands:
             if name in self.__commands[category]:
                 return self.__commands[category][name]
+
+    def get_random(self, category: str):
+        if category in self.__commands:
+            return sample(list(self.__commands[category].values()), k=1)[0]
 
     def check_category(self, category: str):
         if category in self.__commands:
