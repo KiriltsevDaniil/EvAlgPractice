@@ -4,12 +4,13 @@ from pathlib import Path
 import sys
 
 from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, \
-     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon
+     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QAction, QMenu
 from PySide2.QtCore import QFile
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
-class Widget(QWidget): # QMainWindow ???
+
+class Widget(QMainWindow):  # QMainWindow ???
     def __init__(self):
         super(Widget, self).__init__()
         self.load_ui()
@@ -29,15 +30,21 @@ class Widget(QWidget): # QMainWindow ???
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
+        # menu buttons
+        self.FileBtn = self.findChild(QPushButton, 'FileBtn')
+        self.SaveBtn = self.findChild(QPushButton, 'SaveBtn')
+        self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
 
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
         #
-        #Add functionality
+        # Add functionality
         #
         self.ExitBtn.clicked.connect(self.close)
         self.TrayBtn.clicked.connect(self.showMinimized)
         self.MaximizeBtn.clicked.connect(self.maximize)
         self.RunBtn.clicked.connect(self.testfunc)
+        self.FileBtn.clicked.connect(self.Menu_file)
+        self.HelpBtn.clicked.connect(self.Menu_Help)
 
 
     def load_ui(self):
@@ -71,18 +78,42 @@ class Widget(QWidget): # QMainWindow ???
 
     def testfunc(self):
         self.Dialog.exec_()
-        if not self.inExecution: # start execution
+        if not self.inExecution:  # start execution
             if self.StepBox.isChecked():
                 self.StepBtn.setFlat(False)
                 self.RunBtn.setText('Finish')
             self.inExecution = True
             # run alg
             self.setProgress(50)
-        else: # stop execution
+        else:  # stop execution
             self.RunBtn.setText('Run')
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.setProgress(0)
+
+    def Menu_file(self):
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('File')
+
+        impMenu = QMenu('Import', self)
+        impAct = QAction('Import file', self)
+        impMenu.addAction(impAct)
+
+        newAct = QAction('New', self)
+
+        fileMenu.addAction(newAct)
+        fileMenu.addMenu(impMenu)
+#        fileMenu = menubar.addMenu('Save')
+#        fileMenu = menubar.addMenu('Help')
+
+#    def Menu_Save(self):
+#        menubar = self.menuBar()
+#        saveMenu = menubar.addMenu('Save')
+
+    def Menu_Help(self):
+        menubar = self.menuBar()
+        menubar.addMenu('Help')
+
 
 #        dlg = Dialog()
 #        loader = QUiLoader()
@@ -92,6 +123,7 @@ class Widget(QWidget): # QMainWindow ???
 #        dlg = loader.load(ui_file)
 #        ui_file.close()
 #        dlg.exec_()
+
 
 if __name__ == "__main__":
     app = QApplication([])
