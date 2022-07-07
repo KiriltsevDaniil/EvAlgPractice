@@ -1,27 +1,21 @@
 from evpy.commands.genetic_operators.wrappers.facade.kernel import make_kernel
-from evpy.commands.genetic_operators.wrappers.decorators.command_list import CommandList
 from evpy.commands.genetic_operators.wrappers.decorators.command_factory import CommandFactory
 
 
 class KernelFactory:
-    def __init__(self, factory_func=make_kernel, command_list=None):
-
-        if not command_list:
-            self.__commands = CommandList()
-        else:
-            self.__commands = command_list
+    def __init__(self, factory_func=make_kernel):
 
         self.builder = factory_func         # The factory function for Kernel
         self.supplier = CommandFactory()    # The factory function for Commands
 
-    def __build_part(self, command_name: str):
+    def __build_part(self, command):
 
-        if command_name:
-            return self.supplier.build_command(self.__commands.get_command(command_name))
+        if command:
+            return self.supplier.build_command(command)
         else:
             return None
 
-    def build_kernel(self, mutator="", recombinator="", pop_selector="", parent_selector=""):
+    def build_kernel(self, mutator=None, recombinator=None, pop_selector=None, parent_selector=None):
 
         _mutator = self.__build_part(mutator)
         _recombinator = self.__build_part(recombinator)
