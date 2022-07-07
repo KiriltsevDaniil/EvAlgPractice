@@ -16,6 +16,7 @@ class Widget(QMainWindow):  # QMainWindow ???
         self.load_ui()
         self.setWindowTitle('Stock problem')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self._createMenuBar()
         self.inExecution = False
         #
         # Get all UI elements
@@ -31,9 +32,9 @@ class Widget(QMainWindow):  # QMainWindow ???
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         # menu buttons
-        self.FileBtn = self.findChild(QPushButton, 'FileBtn')
-        self.SaveBtn = self.findChild(QPushButton, 'SaveBtn')
-        self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
+#        self.FileBtn = self.findChild(QPushButton, 'FileBtn')
+#        self.SaveBtn = self.findChild(QPushButton, 'SaveBtn')
+#        self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
 
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
         #
@@ -43,8 +44,8 @@ class Widget(QMainWindow):  # QMainWindow ???
         self.TrayBtn.clicked.connect(self.showMinimized)
         self.MaximizeBtn.clicked.connect(self.maximize)
         self.RunBtn.clicked.connect(self.testfunc)
-        self.FileBtn.clicked.connect(self.Menu_file)
-        self.HelpBtn.clicked.connect(self.Menu_Help)
+#        self.FileBtn.clicked.connect(self.Menu_file)
+#        self.HelpBtn.clicked.connect(self.Menu_Help)
 
 
     def load_ui(self):
@@ -54,7 +55,6 @@ class Widget(QMainWindow):  # QMainWindow ???
         ui_file.open(QFile.ReadOnly)
         loader.load(ui_file, self)
         ui_file.close()
-
         path = os.fspath(Path(__file__).resolve().parent / "dialog.ui")
         ui_file = QFile(path)
         ui_file.open(QFile.ReadOnly)
@@ -91,9 +91,9 @@ class Widget(QMainWindow):  # QMainWindow ???
             self.StepBtn.setFlat(True)
             self.setProgress(0)
 
-    def Menu_file(self):
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('File')
+    def _createMenuBar(self):
+#        menubar = self.menuBar()
+        fileMenu = self.menuBar().addMenu('File')
 
         impMenu = QMenu('Import', self)
         impAct = QAction('Import file', self)
@@ -103,16 +103,17 @@ class Widget(QMainWindow):  # QMainWindow ???
 
         fileMenu.addAction(newAct)
         fileMenu.addMenu(impMenu)
-#        fileMenu = menubar.addMenu('Save')
-#        fileMenu = menubar.addMenu('Help')
-
+        saveMenu = self.menuBar().addMenu('Save')
+        helpMenu = self.menuBar().addMenu('Help')
+        self.setGeometry(300, 300, 300, 200)
+        self.show()
 #    def Menu_Save(self):
 #        menubar = self.menuBar()
 #        saveMenu = menubar.addMenu('Save')
 
-    def Menu_Help(self):
-        menubar = self.menuBar()
-        menubar.addMenu('Help')
+#    def Menu_Help(self):
+#        menubar = self.menuBar()
+#        menubar.addMenu('Help')
 
 
 #        dlg = Dialog()
