@@ -232,6 +232,7 @@ class Widget(QWidget):
             self.setProgress(0)
         self.appendStringToLog('testfunc executed')
 
+
 if __name__ == "__main__":
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
