@@ -86,6 +86,8 @@ class CommandList:
             if name in self.__commands[category]:
                 return self.__commands[category][name]
 
+        raise KeyError("No such operator found!")
+
     def get_random(self, category: str):
         if category in self.__commands:
             return sample(list(self.__commands[category].values()), k=1)[0]

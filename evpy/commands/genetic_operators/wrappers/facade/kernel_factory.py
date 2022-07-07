@@ -29,9 +29,3 @@ class KernelFactory:
         _parent_selector = self.__build_part(parent_selector)
 
         return self.builder(_mutator, _recombinator, _pop_selector, _parent_selector)
-
-
-kerr_factory = KernelFactory()
-kerr = KernelFactory.build_kernel(kerr_factory, "point_mutation", "double_point_crossover", "bolzman_selection",
-                                  "inbreeding")
-print(kerr.mutation([1, 0, 0, 0, 0]))
