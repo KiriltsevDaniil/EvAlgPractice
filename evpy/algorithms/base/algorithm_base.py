@@ -5,8 +5,9 @@ def make_base(kernel: Kernel, fitness):
     return AlgorithmBase(kernel, fitness)
 
 
+# Base to build any algorithm upon
 class AlgorithmBase:
-    def __init__(self, kernel, fitness):
+    def __init__(self, kernel: Kernel, fitness):
 
         self.__get_fitness = fitness
         self.__kernel = kernel
