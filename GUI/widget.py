@@ -26,7 +26,7 @@ class Widget(QWidget):
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
 
-    def load_ui(self):
+    def load_ui(self): # Комментарии как на 30-32 должны писаться через '''text''', даже если они на одной строке, т.к. содержат метаинформацию
         #
         # Set Main Window UI
         #
@@ -153,9 +153,9 @@ class Widget(QWidget):
             vlay.addWidget(box)
             lay = QVBoxLayout()
             # Inside layer
-            labels = [QLabel(f"Width      {2}"),
-                      QLabel(f"Waste      {14}"),
-                      QLabel(f"Parents    {1}, {4}")]
+            labels = [QLabel(f"Width      {2}"), # Зачем здесь форматная строка для константы?
+                      QLabel(f"Waste      {14}"), # Зачем здесь форматная строка для константы?
+                      QLabel(f"Parents    {1}, {4}")] # Зачем здесь форматная строка для константы?
             for j in range(3):
                 labels[j].setStyleSheet("color : white; font: bold; margin-left: 10px;")
                 labels[j].setAlignment(QtCore.Qt.AlignLeft)
@@ -169,9 +169,9 @@ class Widget(QWidget):
         self.VariablesBox.setWidgetResizable(True)
         vlay = QVBoxLayout(content)
         # "Root" layer
-        for i in range(1):
+        for i in range(1): # in range(1) означает, что в переменной i будут значения до 1, следовательно *
             title = "GA parameters"
-            if i == 1:
+            if i == 1: # * Это условие никода не произойдет
                 title = "Other parameters"
             box = CollapsibleBox(title) # Box represents "Root" and inner objects
             vlay.addWidget(box)
