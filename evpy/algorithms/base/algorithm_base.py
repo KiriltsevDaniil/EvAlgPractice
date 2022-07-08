@@ -13,5 +13,6 @@ class AlgorithmBase:
         self.__kernel = kernel
 
         self.__memory = []
+        self.__current_population = None
         self.__fittest = None
         self.__max_fitness = None
