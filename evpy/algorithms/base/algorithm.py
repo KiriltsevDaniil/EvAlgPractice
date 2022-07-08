@@ -11,8 +11,14 @@ class Algorithm(AlgorithmBase):
     def __init__(self, kernel: Kernel, fitness, pop_size: int, gen_len: int):
         super().__init__(kernel, fitness)
 
-        self._pop_size = pop_size
+        self.__pop_size = pop_size
         self.__gen_length = gen_len
 
     def evaluate(self, T=100, p_mut=.5, p_gene_mut=.5):
         pass
+
+    def _get_pop_size(self):
+        return self.__pop_size
+
+    def _get_gen_length(self):
+        return self.__gen_length
