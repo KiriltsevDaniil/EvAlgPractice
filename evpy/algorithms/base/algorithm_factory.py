@@ -14,23 +14,11 @@ class AlgorithmFactory:
         self.__supplier = KernelFactory()
         self.__builder = builder
 
-    def build_algorithm(self, algorithm: dict, fitness_function, pop_size: int, gen_len: int):
-        _kernel = self.__supplier.build_kernel(self.__supported.get_command(algorithm["mutation"]),
-                                               self.__supported.get_command(algorithm["recombination"]),
-                                               self.__supported.get_command(algorithm["population_selector"]),
-                                               self.__supported.get_command(algorithm["parent_selector"]))
+    def _build_algorithm(self, algorithm: dict, fitness_function, pop_size: int, gen_len: int):
+        _kernel = self.__supplier.build_kernel(
+            self.__supported.get_command(algorithm["mutation"]) if algorithm["mutation"] else None,
+            self.__supported.get_command(algorithm["recombination"]) if algorithm["recombination"] else None,
+            self.__supported.get_command(algorithm["population_selector"]) if algorithm["population_selector"] else None,
+            self.__supported.get_command(algorithm["parent_selector"]) if algorithm["parent_selector"] else None)
 
         return self.__builder(_kernel, fitness_function, pop_size, gen_len)
-
-
-def a():
-    return -1
-
-
-alg_fac = AlgorithmFactory()
-alg = alg_fac.build_algorithm({"mutation": "point_mutation",
-                               "recombination": "single_point_crossover",
-                               "population_selector": "elite_selection",
-                               "parent_selector": "random_couple"}, a, 10, 4)
-
-
