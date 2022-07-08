@@ -8,47 +8,109 @@ def make_canonical(kernel: Kernel, fitness, pop_size, gen_len):
 
 
 class Canonical(Algorithm):
-    """Canonical GA (Holland's model)"""
+    '''
+    Canonical GA (Holland's model)
+    Attributes
+    ----------
+    __get_fitness: function
+        This attribute contains fitness function.
+    __kernel: Kernel
+        This attribute contains kernel.
+    __memory : list
+        This attribute contains the maximum fitness of each previous generation.
+    __current_population : list
+        this attribute contains population of the current generation.
+    __fittest : list
+        This attribute contains the fittes individual among all previous generations.
+    __max_fitness : float
+         This attribute contains the maximum fitness among all previous generations.
+    __pop_size : int
+        This attribute contains size of the population.
+    __gen_length : int
+        This attribute contains word length of genes.
+    '''
     def __init__(self, kernel: Kernel, fitness, pop_size=5, gen_len=10):
+        '''
+        Parameters
+        ----------
+        kernel : Kernel
+            The main purpose of the kernel is to provide certain genetic operators to GA.
+        fitness : function
+            Fitness is used to evaluate the quality of an individual.
+        pop_size : int, optional
+            Pop_size parameter responsible for population size.
+        gen_len : int, optional
+            Gen_len parameter responsible for word length of genes.
+        '''
         super().__init__(kernel, fitness, pop_size, gen_len)
 
+    def memory_update(self, current_pop, t):
+        '''
+        This function updates algorithm's memory list.
+
+        Parameters
+        ----------
+        fittest : list
+            This parameter contains the genotype of the fittest individual of current population.
+        fitness : float
+            This parameter contains the fitness of the fittest individual of current population.
+        t : int
+            This parameter contains number of generation.
+        '''
+        fittest, fitness = current_pop[0]
+        if self._get_fittest() is None and self._get_max_fitness() is None:
+                self._set_fittest(fittest)
+                self._set_max_fitness(fitness)
+        elif fitness > self._get_max_fitness():
+            self._set_fittest(fittest)
+            self._set_max_fitness(fitness)
+        self._set_current([x[0] for x in current_pop])
+        self._add_to_memory([self._get_max_fitness(), t])
+        
+        return
+
     def evaluate(self, T=100, p_mut=.5, p_gene_mut=.5):
+        '''
+        Parameters
+        ----------
+        T : int
+            The number of generations after which the algorithm ends.
+        p_mut : float
+            The probability of mutation of the offspring after birth.
+        p_gene_mut : float
+            The probability of gene mutation.
+        
+        Returns
+        -------
+        list
+            returns the fittest individual among all generations
+        '''
         t = 0
-        init_population = [[randint(0, 1) for y in range(self._get_gen_length())]
-                           for x in range(self._get_pop_size())]
-
-        weighted_pop = [[x, self._get_fitness()(x)] for x in init_population]
-        weighted_pop.sort(key=lambda x: x[1], reverse=True)
+        init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
+        weighted_pop = [[x, self._get_fitness()(x)] for x in init_population].sort(key=lambda x: x[1], reverse=True)
+        
         while t < T:
-            print(t)
-            if self._get_fittest() is None and self._get_max_fitness() is None:
-                self._set_fittest(weighted_pop[0][0])
-                self._set_max_fitness(weighted_pop[0][1])
+            print(f"{int((t/T)*100)}% completed")
+            self.memory_update(weighted_pop, t)
 
-            elif weighted_pop[0][1] > self._get_max_fitness():
-                self._set_fittest(weighted_pop[0][0])
-                self._set_max_fitness(weighted_pop[0][1])
+            # Choosing parents
+            parents = sample(self._get_kernel().parent_selection(weighted_pop), 2)
 
-            self._add_to_memory([self._get_max_fitness(), t])
-            parents = self._get_kernel().parent_selection(weighted_pop)
-            parents = sample(parents, 2)
+            # Recombination
             _, newborns = self._get_kernel().recombination(parents[0][0], parents[1][0])
+            
+            # Mutation
             for individual in range(len(newborns)):
                 newborns[individual] = self._get_kernel().mutation(newborns[individual], p_mut=p_gene_mut) \
                     if random() <= p_mut else newborns[individual]
+            
+            # New population formation
             weighted_pop[parents[0][1]], weighted_pop[parents[1][1]] = [newborns[0],
                                                                         self._get_fitness()(newborns[0])], \
                                                                        [newborns[1],
                                                                         self._get_fitness()(newborns[1])]
             weighted_pop.sort(key=lambda x: x[1], reverse=True)
             t += 1
-        if self._get_fittest() is None and self._get_max_fitness() is None:
-            self._set_fittest(weighted_pop[0][0])
-            self._set_max_fitness(weighted_pop[0][1])
-
-        elif weighted_pop[0][1] > self._get_max_fitness():
-            self._set_fittest(weighted_pop[0][0])
-            self._set_max_fitness(weighted_pop[0][1])
-
-        self._add_to_memory([self._get_max_fitness(), t])
+        self.memory_update(weighted_pop, t)
+        
         return self._get_fittest()
