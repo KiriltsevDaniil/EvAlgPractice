@@ -1,5 +1,5 @@
 from evpy.algorithms.base.algorithm_base import AlgorithmBase
-from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
+from evpy.wrappers.facade.kernel import Kernel
 
 
 def make_algorithm(kernel: Kernel, fitness, pop_size: int, gen_len: int):
