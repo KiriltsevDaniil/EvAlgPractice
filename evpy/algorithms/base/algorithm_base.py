@@ -39,3 +39,9 @@ class AlgorithmBase:
 
     def _get_memory(self):
         return self.__memory
+
+    def _get_current(self):
+        return self.__current_population
+
+    def _set_current(self, value):
+        self.__current_population = value
