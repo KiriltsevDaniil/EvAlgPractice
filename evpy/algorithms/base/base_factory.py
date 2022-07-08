@@ -1,10 +1,10 @@
-from evpy.algorithms.base.algorithm_base import make_algorithm
+from evpy.algorithms.base.algorithm_base import make_base
 from evpy.commands.genetic_operators.wrappers.facade.kernel_factory import KernelFactory
 from evpy.commands.genetic_operators.wrappers.decorators.command_list import CommandList
 
 
 class BaseFactory:
-    def __init__(self, builder=make_algorithm, supported_commands=None):
+    def __init__(self, builder=make_base, supported_commands=None):
 
         if not supported_commands:
             self.__supported = CommandList()

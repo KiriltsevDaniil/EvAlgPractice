@@ -1,7 +1,7 @@
 from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
 
 
-def make_algorithm(kernel: Kernel, fitness):
+def make_base(kernel: Kernel, fitness):
     return AlgorithmBase(kernel, fitness)
 
 
