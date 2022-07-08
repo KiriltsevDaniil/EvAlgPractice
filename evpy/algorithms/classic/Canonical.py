@@ -3,6 +3,10 @@ from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
 from random import randint, sample, random
 
 
+def make_canonical(kernel: Kernel, fitness, pop_size, gen_len):
+    return Canonical(kernel, fitness, pop_size, gen_len)
+
+
 class Canonical(Algorithm):
     """Canonical GA (Holland's model)"""
     def __init__(self, kernel: Kernel, fitness, pop_size=5, gen_len=10):
