@@ -290,7 +290,7 @@ QScrollBar::sub-page:vertical
   <widget class="QPushButton" name="TrayBtn">
    <property name="geometry">
     <rect>
-     <x>1040</x>
+     <x>1010</x>
      <y>10</y>
      <width>31</width>
      <height>25</height>
@@ -440,7 +440,7 @@ QScrollBar::sub-page:vertical
              <x>0</x>
              <y>0</y>
              <width>235</width>
-             <height>197</height>
+             <height>192</height>
             </rect>
            </property>
           </widget>
@@ -505,6 +505,26 @@ font: bold 15px;
    </property>
    <property name="text">
     <string>Help</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="WResizeBtn">
+   <property name="geometry">
+    <rect>
+     <x>1050</x>
+     <y>10</y>
+     <width>31</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">*{
+	color: white;
+	background: rgb(3, 4, 19);
+	border: 0px solid rgb(3, 4, 19);;
+}</string>
+   </property>
+   <property name="text">
+    <string>[ ]</string>
    </property>
   </widget>
  </widget>

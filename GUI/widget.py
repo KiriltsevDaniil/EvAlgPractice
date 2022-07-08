@@ -6,8 +6,8 @@ from datetime import datetime
 
 from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
      QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
-     QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
-from PySide2.QtGui import QRegExpValidator, QIcon
+     QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel# for Collapsible Box
+from PySide2.QtGui import QRegExpValidator, QIcon, QMouseEvent
 from PySide2.QtCore import QFile, QRegExp, QPoint
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
@@ -17,6 +17,7 @@ from CollapsibleBox import CollapsibleBox
 class Widget(QWidget):
     def __init__(self):
         super(Widget, self).__init__()
+
         self.load_ui()
         appIcon = QIcon("icon3.png")
         self.setWindowIcon(appIcon)
@@ -45,6 +46,7 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
+        self.WResizeBtn = self.findChild(QPushButton, 'WResizeBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
@@ -58,6 +60,7 @@ class Widget(QWidget):
         self.HelpBtn.clicked.connect(self.help)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
+        self.WResizeBtn.clicked.connect(self.ScreenResize)
         #
         # Set First Dialog UI
         #
@@ -123,6 +126,9 @@ class Widget(QWidget):
         delta = QPoint(event.globalPos() - self.oldPosition)
         self.move(self.x() + delta.x(), self.y() + delta.y())
         self.oldPosition = event.globalPos()
+        self.HelpDialog.move(250,250)
+        self.FirstDialog.move(250,250)
+        self.SecondDialog.move(250,250)
 
     def appendStringToLog(self, str):
         Time = datetime.now()
@@ -138,6 +144,10 @@ class Widget(QWidget):
 
     def stepClicked(self):
         self.appendStringToLog('step btn clicked')
+
+    def ScreenResize(self):
+        self.resizeEvent(mousePressEvent)
+
 
     def setPopulationBox(self):
         content = QWidget()
@@ -207,9 +217,12 @@ class Widget(QWidget):
 
 
     def help(self):
+        self.HelpBtn.setEnabled(False)
         self.HelpDialog.exec_()
+        self.HelpBtn.setEnabled(True)
 
     def testfunc(self):
+        self.RunBtn.setEnabled(False)
         if not self.inExecution: # start execution
             if self.FirstDialog.exec_():
                 self.SecondDialog.RectLine.clear()
@@ -226,11 +239,13 @@ class Widget(QWidget):
         else: # stop execution
             self.StepBox.setEnabled(True)
             self.RunBtn.setText('Run')
+            self.RunBtn.setEnabled(False)
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
             self.setProgress(0)
         self.appendStringToLog('testfunc executed')
+        self.RunBtn.setEnabled(True)
 
 
 if __name__ == "__main__":
