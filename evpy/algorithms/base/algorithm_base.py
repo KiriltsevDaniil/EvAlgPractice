@@ -1,4 +1,4 @@
-from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
+from evpy.wrappers.facade.kernel import Kernel
 
 
 def make_base(kernel: Kernel, fitness):
@@ -39,3 +39,9 @@ class AlgorithmBase:
 
     def _get_memory(self):
         return self.__memory
+
+    def _get_current(self):
+        return self.__current_population
+
+    def _set_current(self, value):
+        self.__current_population = value
