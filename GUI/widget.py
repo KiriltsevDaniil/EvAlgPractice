@@ -4,11 +4,11 @@ from pathlib import Path
 import sys
 from datetime import datetime
 
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
+from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
      QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
      QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel# for Collapsible Box
-from PySide2.QtGui import QRegExpValidator, QIcon, QMouseEvent
-from PySide2.QtCore import QFile, QRegExp, QPoint
+from PySide2.QtGui import QRegExpValidator, QIcon, QMouseEvent, QPaintDevice
+from PySide2.QtCore import QFile, QRegExp, QPoint, QObject
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
@@ -61,6 +61,7 @@ class Widget(QWidget):
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
         self.WResizeBtn.clicked.connect(self.ScreenResize)
+        self.ImportBtn.clicked.connect(self.importFile)
         #
         # Set First Dialog UI
         #
@@ -116,6 +117,7 @@ class Widget(QWidget):
         #
         self.setWindowTitle('Stock problem')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+
         self.StepBtn.setEnabled(False)
 
 
@@ -146,8 +148,7 @@ class Widget(QWidget):
         self.appendStringToLog('step btn clicked')
 
     def ScreenResize(self):
-        self.resizeEvent(mousePressEvent)
-
+        screen = QApplication().desktop().availableGeometry() #singletone prob
 
     def setPopulationBox(self):
         content = QWidget()
@@ -220,6 +221,11 @@ class Widget(QWidget):
         self.HelpBtn.setEnabled(False)
         self.HelpDialog.exec_()
         self.HelpBtn.setEnabled(True)
+
+
+    def importFile(self):
+        filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
+
 
     def testfunc(self):
         self.RunBtn.setEnabled(False)
