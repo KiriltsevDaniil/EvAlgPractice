@@ -22,3 +22,6 @@ class AlgorithmFactory:
             self.__supported.get_command(algorithm["parent_selector"]) if algorithm["parent_selector"] else None)
 
         return self.__builder(_kernel, fitness_function, pop_size, gen_len)
+
+    def _check_operator(self, operator: str):
+        return self.__supported.get_command(operator)

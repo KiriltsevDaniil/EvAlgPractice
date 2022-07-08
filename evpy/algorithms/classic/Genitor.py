@@ -3,8 +3,13 @@ from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
 from evpy.algorithms.base.algorithm import Algorithm
 from random import randint, random
 
+
+def make_genitor(kernel: Kernel, fitness, pop_size, gen_len):
+    return Genitor(kernel, fitness, pop_size, gen_len)
+
+
 class Genitor(Algorithm):
-    '''Genitor GA (Whitley's model)'''
+    """Genitor GA (Whitley's model)"""
     def __init__(self, kernel: Kernel, fitness, pop_size=5, gen_len=10):
         super().__init__(kernel, fitness, pop_size, gen_len)
 
