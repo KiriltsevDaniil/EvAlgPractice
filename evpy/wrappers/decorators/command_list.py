@@ -1,14 +1,14 @@
-from evpy.commands.genetic_operators.recombination.crossover import single_point_crossover, double_point_crossover, \
+from evpy.genetic_operators.recombination.crossover import single_point_crossover, double_point_crossover, \
     multi_point_crossover, shuffler_crossover, single_point_rsc
-from evpy.commands.genetic_operators.recombination.rvrecombination import intermediate_recombination, \
+from evpy.genetic_operators.recombination.rvrecombination import intermediate_recombination, \
     linear_recombination
-from evpy.commands.genetic_operators.recombination.discrete import discrete_recombination
-from evpy.commands.genetic_operators.mutators.bimutators import point_mutation, group_mutation, density_mutation, \
+from evpy.genetic_operators.recombination.discrete import discrete_recombination
+from evpy.genetic_operators.mutators.bimutators import point_mutation, group_mutation, density_mutation, \
     exchange_mutation
-from evpy.commands.genetic_operators.mutators.rvmutators import real_valued_mutation
-from evpy.commands.genetic_operators.selectors.population_selection import truncation_selection, elite_selection, \
+from evpy.genetic_operators.mutators.rvmutators import real_valued_mutation
+from evpy.genetic_operators.selectors.population_selection import truncation_selection, elite_selection, \
     bolzman_selection
-from evpy.commands.genetic_operators.selectors.parent_selection import random_couple, panmixia, outbreeding, \
+from evpy.genetic_operators.selectors.parent_selection import random_couple, panmixia, outbreeding, \
     inbreeding, tournament_selection, fitness_proportional_selection
 
 from random import sample
