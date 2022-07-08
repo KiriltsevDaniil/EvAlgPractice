@@ -87,7 +87,8 @@ class Canonical(Algorithm):
         '''
         t = 0
         init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
-        weighted_pop = [[x, self._get_fitness()(x)] for x in init_population].sort(key=lambda x: x[1], reverse=True)
+        weighted_pop = [[x, self._get_fitness()(x)] for x in init_population]
+        weighted_pop.sort(key=lambda x: x[1], reverse=True)
         
         while t < T:
             print(f"{int((t/T)*100)}% completed")
