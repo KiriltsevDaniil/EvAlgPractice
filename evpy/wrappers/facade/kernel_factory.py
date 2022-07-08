@@ -1,5 +1,5 @@
-from evpy.commands.genetic_operators.wrappers.facade.kernel import make_kernel
-from evpy.commands.genetic_operators.wrappers.decorators.command_factory import CommandFactory
+from evpy.wrappers.facade.kernel import make_kernel
+from evpy.wrappers.decorators.command_factory import CommandFactory
 
 
 class KernelFactory:

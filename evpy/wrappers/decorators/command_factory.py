@@ -1,4 +1,4 @@
-from evpy.commands.genetic_operators.wrappers.decorators.command import make_command
+from evpy.wrappers.decorators.command import make_command
 
 
 class CommandFactory:

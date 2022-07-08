@@ -1,6 +1,6 @@
 from evpy.algorithms.base.algorithm import make_algorithm
-from evpy.commands.genetic_operators.wrappers.decorators.command_list import CommandList
-from evpy.commands.genetic_operators.wrappers.facade.kernel_factory import KernelFactory
+from evpy.wrappers.decorators.command_list import CommandList
+from evpy.wrappers.facade.kernel_factory import KernelFactory
 
 
 class AlgorithmFactory:

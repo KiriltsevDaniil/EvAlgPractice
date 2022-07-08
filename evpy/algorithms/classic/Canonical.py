@@ -1,5 +1,5 @@
 from evpy.algorithms.base.algorithm import Algorithm
-from evpy.commands.genetic_operators.wrappers.facade.kernel import Kernel
+from evpy.wrappers.facade.kernel import Kernel
 from random import randint, sample, random
 
 
