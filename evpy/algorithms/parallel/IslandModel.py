@@ -3,7 +3,7 @@ from time import perf_counter
 
 
 class IslandModel:
-    def __init__(self, archipelago: list, fitness_function: callable, rule: callable=None) -> list:
+    def __init__(self, archipelago: list, fitness_function: callable, rule: callable=None):
         self.__archipelago = archipelago
         self.__migrate = rule
         self.__fitness = fitness_function
