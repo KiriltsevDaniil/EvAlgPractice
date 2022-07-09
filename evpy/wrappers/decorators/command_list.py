@@ -16,7 +16,7 @@ from random import sample
 
 #   A collection of all supported commands
 class CommandList:
-    def __init__(self, commands=None):
+    def __init__(self, commands: dict = None):
 
         supported = {
             "recombination": {"single_point_crossover": single_point_crossover,

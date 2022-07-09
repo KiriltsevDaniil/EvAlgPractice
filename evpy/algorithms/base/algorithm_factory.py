@@ -5,16 +5,15 @@ from evpy.wrappers.facade.kernel_factory import KernelFactory
 
 class AlgorithmFactory:
     def __init__(self, algorithm_builder: callable = None, kernel_builder: callable = None,
-                 command_builder: callable = None, supported_commands=None):
+                 command_builder: callable = None, supported_commands: CommandList = None):
 
         if not supported_commands:
-            self.__supported = CommandList()
-        else:
-            self.__supported = supported_commands
+            supported_commands = CommandList()
 
         if not algorithm_builder:
             algorithm_builder = make_algorithm
 
+        self.__supported = supported_commands
         self.__supplier = KernelFactory(kernel_builder, command_builder)
         self.__builder = algorithm_builder
 
