@@ -9,10 +9,10 @@ class GenitorFactory(AlgorithmFactory):
     def build_genitor(self, mutator: str, recombinator: str, fitness_function, pop_size=5, gen_len=10):
 
         if not self._check_operator(mutator):
-            raise ValueError("Mutation function not defined!")
+            raise ValueError(f"Mutation function: {mutator} not found!")
 
         if not self._check_operator(recombinator):
-            raise ValueError("Recombination function not defined!")
+            raise ValueError(f"Recombination function {recombinator} not found!")
 
         commands = {"mutation": mutator,
                     "recombination": recombinator,
