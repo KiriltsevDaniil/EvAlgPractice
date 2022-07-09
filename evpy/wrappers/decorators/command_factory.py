@@ -2,9 +2,11 @@ from evpy.wrappers.decorators.command import make_command
 
 
 class CommandFactory:
-    def __init__(self, factory_func=make_command):
+    def __init__(self, command_builder: callable = None):
+        if not command_builder:
+            command_builder = make_command
 
-        self.__factory = factory_func
+        self.__builder = command_builder
 
-    def build_command(self, func):
-        return self.__factory(func)
+    def build_command(self, func: callable):
+        return self.__builder(func)

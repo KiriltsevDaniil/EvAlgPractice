@@ -32,7 +32,8 @@ class Genitor(Algorithm):
     __gen_length : int
         This attribute contains word length of genes.
     '''
-    def __init__(self, kernel: Kernel, fitness: callable, pop_size: int=5, gen_len: int=10):
+
+    def __init__(self, kernel: Kernel, fitness: callable, pop_size: int = 5, gen_len: int = 10):
         super().__init__(kernel, fitness, pop_size, gen_len)
 
     def memory_update(self, weighted_pop: list, t: int) -> None:
@@ -48,14 +49,14 @@ class Genitor(Algorithm):
         '''
         fittest, fitness = weighted_pop[0]
         if self._get_fittest() is None and self._get_max_fitness() is None:
-                self._set_fittest(fittest)
-                self._set_max_fitness(fitness)
+            self._set_fittest(fittest)
+            self._set_max_fitness(fitness)
         elif fitness > self._get_max_fitness():
             self._set_fittest(fittest)
             self._set_max_fitness(fitness)
         self._set_current([x[0] for x in weighted_pop])
         self._add_to_memory([self._get_max_fitness(), t])
-        
+
         return
 
     def check_equilibrium(self, weighted_pop: list) -> bool:
@@ -74,12 +75,12 @@ class Genitor(Algorithm):
         '''
         equilibrium = False
         for i in range(1, len(weighted_pop)):
-                if weighted_pop[i][1] != weighted_pop[i-1][1]: break
-                if i == (len(weighted_pop) - 1) and weighted_pop[i][1] == weighted_pop[i-1][1]: equilibrium = True
+            if weighted_pop[i][1] != weighted_pop[i - 1][1]: break
+            if i == (len(weighted_pop) - 1) and weighted_pop[i][1] == weighted_pop[i - 1][1]: equilibrium = True
 
         return equilibrium
 
-    def evaluate(self, T: int=2000, p_gene_mut: float=.5, p_mut: float=.5) -> list:
+    def evaluate(self, T: int = 2000, p_gene_mut: float = .5, p_mut: float = .5) -> list:
         '''
         Parameters
         ----------
@@ -96,9 +97,10 @@ class Genitor(Algorithm):
             returns the fittest individual among all generations
         '''
         starting_point = perf_counter()
-        t,  equilibrium = 0, False
+        t, equilibrium = 0, False
         if self._get_current() == None:
-            init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
+            init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in
+                               range(self._get_pop_size())]
         else:
             init_population = self._get_current()
         weighted_pop = [[x, self._get_fitness()(x)] for x in init_population]
@@ -106,7 +108,7 @@ class Genitor(Algorithm):
 
         equilibrium = self.check_equilibrium(weighted_pop)
         while not equilibrium and t < T:
-            print(f"Generation: {t}/{T}") if t % (T//10) == 0 else None
+            print(f"Generation: {t}/{T}") if t % (T // 10) == 0 else None
             self.memory_update(weighted_pop, t)
 
             # Choosing parents
@@ -118,7 +120,7 @@ class Genitor(Algorithm):
 
             # Mutation
             child = self._get_kernel().mutation(child, p_mut=p_gene_mut) if random() <= p_mut else child
-            
+
             # New population formation
             weighted_pop[-1] = [child, self._get_fitness()(child)]
             weighted_pop.sort(key=lambda x: x[1], reverse=True)

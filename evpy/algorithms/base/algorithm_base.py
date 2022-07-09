@@ -1,13 +1,13 @@
 from evpy.wrappers.facade.kernel import Kernel
 
 
-def make_base(kernel: Kernel, fitness):
+def make_base(kernel: Kernel, fitness: callable):
     return AlgorithmBase(kernel, fitness)
 
 
 # Base to build any algorithm upon
 class AlgorithmBase:
-    def __init__(self, kernel: Kernel, fitness):
+    def __init__(self, kernel: Kernel, fitness: callable):
         self.__get_fitness = fitness
         self.__kernel = kernel
 
@@ -32,16 +32,16 @@ class AlgorithmBase:
     def _get_fittest(self):
         return self.__fittest
 
-    def _set_fittest(self, value):
+    def _set_fittest(self, value: list):
         self.__fittest = value
 
     def _get_max_fitness(self):
         return self.__max_fitness
 
-    def _set_max_fitness(self, value):
+    def _set_max_fitness(self, value: int):
         self.__max_fitness = value
 
-    def _add_to_memory(self, value):
+    def _add_to_memory(self, value: list):
         self.__memory.append(value)
 
     def _get_memory(self):
@@ -50,5 +50,5 @@ class AlgorithmBase:
     def _get_current(self):
         return self.__current_population
 
-    def _set_current(self, value):
+    def _set_current(self, value: list):
         self.__current_population = value

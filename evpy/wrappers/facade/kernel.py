@@ -1,10 +1,14 @@
+from evpy.wrappers.decorators.command import Command
 
-def make_kernel(mutator_func=None, recomb_func=None, pop_func=None, parent_func=None):
+
+def make_kernel(mutator_func: Command = None, recomb_func: Command = None, pop_func: Command = None,
+                parent_func: Command = None):
     return Kernel(mutator_func, recomb_func, pop_func, parent_func)
 
 
 class Kernel:
-    def __init__(self, mutator=None, recombinator=None, pop_selector=None, parent_selector=None):
+    def __init__(self, mutator: Command = None, recombinator: Command = None,
+                 pop_selector: Command = None, parent_selector: Command = None):
 
         self.__mutator = mutator
         self.__recombinator = recombinator

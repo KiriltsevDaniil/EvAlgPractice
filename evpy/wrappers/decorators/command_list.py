@@ -16,7 +16,7 @@ from random import sample
 
 #   A collection of all supported commands
 class CommandList:
-    def __init__(self, commands=None):
+    def __init__(self, commands: dict = None):
 
         supported = {
             "recombination": {"single_point_crossover": single_point_crossover,
@@ -86,7 +86,7 @@ class CommandList:
             if name in self.__commands[category]:
                 return self.__commands[category][name]
 
-        raise KeyError("No such operator found!")
+        raise KeyError(f"No {name} operator found!")
 
     def get_random(self, category: str):
         if category in self.__commands:
