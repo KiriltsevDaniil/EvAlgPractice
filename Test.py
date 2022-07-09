@@ -2,17 +2,19 @@ import matplotlib.pyplot as plt
 from evpy.algorithms.classic.canonical_factory import CanonicalFactory
 from evpy.algorithms.classic.genitor_factory import GenitorFactory
 
-from evpy.algorithms.parallel.IslandModel import IslandModel #!!!!!!!!!!!!!!!!!!
+from evpy.algorithms.parallel.islandmodel_factory import IslandModelFactory
+
+
+island_factory = IslandModelFactory()
+parameters = [[100],
+              [1000, "point_mutation", "single_point_crossover"],
+              [500, "point_mutation", "single_point_crossover"]]
+
+island_model = island_factory.make_island_model(parameters, lambda x: sum(x) + 1, 500)
+
+
 canonical_factory = CanonicalFactory()
 genitor_factory = GenitorFactory()
-
-island_model = IslandModel([
-    canonical_factory.build_canonical(fitness_function=lambda x: sum(x) + 1, pop_size=100, gen_len=500),
-    genitor_factory.build_genitor(fitness_function=lambda x: sum(x)+1, recombinator="single_point_crossover",
-                                mutator="point_mutation", pop_size=100, gen_len=500),
-    genitor_factory.build_genitor(fitness_function=lambda x: sum(x)+1, recombinator="shuffler_crossover",
-                                mutator="point_mutation", pop_size=100, gen_len=500)
-], fitness_function=lambda x: sum(x) + 1)
 
 canonical = canonical_factory.build_canonical(fitness_function=lambda x: sum(x) + 1, pop_size=100, gen_len=500)
 

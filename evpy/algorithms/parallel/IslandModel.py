@@ -3,6 +3,10 @@ from concurrent.futures import ThreadPoolExecutor
 from time import perf_counter
 
 
+def make_island_model(archipelago: list, fitness_function: callable, rule: callable = None):
+    return IslandModel(archipelago, fitness_function, rule)
+
+
 class IslandModel(Parallel):
     def __init__(self, archipelago: list, fitness_function: callable, rule: callable = None):
 
