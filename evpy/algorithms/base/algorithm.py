@@ -1,24 +1,40 @@
-from evpy.algorithms.base.algorithm_base import AlgorithmBase
-from evpy.wrappers.facade.kernel import Kernel
+def make_algorithm(fitness: callable):
+    return Algorithm(fitness)
 
 
-def make_algorithm(kernel: Kernel, fitness: callable, pop_size: int, gen_len: int):
-    return Algorithm(kernel, fitness, pop_size, gen_len)
+# Base to build any algorithm upon
+class Algorithm:
+    def __init__(self, fitness: callable):
+        self.__get_fitness = fitness
 
+        self.__memory = []
+        self.__fittest = None
+        self.__max_fitness = None
+        self.__convergence_time = None
 
-# Algorithm parent class, defines evaluate() function signature. Used to inherit classical algorithms
-class Algorithm(AlgorithmBase):
-    def __init__(self, kernel: Kernel, fitness: callable, pop_size: int, gen_len: int):
-        super().__init__(kernel, fitness)
+    def _get_convergence_time(self):
+        return self.__convergence_time
 
-        self.__pop_size = pop_size
-        self.__gen_length = gen_len
+    def _set_convergence_time(self, time: float):
+        self.__convergence_time = time
 
-    def evaluate(self, T: int =100, p_mut: float =.5, p_gene_mut: float =.5):
-        pass
+    def _get_fitness(self):
+        return self.__get_fitness
 
-    def _get_pop_size(self):
-        return self.__pop_size
+    def _get_fittest(self):
+        return self.__fittest
 
-    def _get_gen_length(self):
-        return self.__gen_length
+    def _set_fittest(self, value: list):
+        self.__fittest = value
+
+    def _get_max_fitness(self):
+        return self.__max_fitness
+
+    def _set_max_fitness(self, value: int):
+        self.__max_fitness = value
+
+    def _add_to_memory(self, value: list):
+        self.__memory.append(value)
+
+    def _get_memory(self):
+        return self.__memory
