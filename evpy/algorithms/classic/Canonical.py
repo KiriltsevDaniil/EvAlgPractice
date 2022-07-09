@@ -3,13 +3,14 @@ from evpy.wrappers.facade.kernel import Kernel
 from random import randint, sample, random
 
 
-def make_canonical(kernel: Kernel, fitness, pop_size, gen_len):
+def make_canonical(kernel: Kernel, fitness: function, pop_size: int, gen_len: int):
     return Canonical(kernel, fitness, pop_size, gen_len)
 
 
 class Canonical(Algorithm):
     '''
     Canonical GA (Holland's model)
+    
     Attributes
     ----------
     __get_fitness: function
@@ -29,7 +30,7 @@ class Canonical(Algorithm):
     __gen_length : int
         This attribute contains word length of genes.
     '''
-    def __init__(self, kernel: Kernel, fitness, pop_size=5, gen_len=10):
+    def __init__(self, kernel: Kernel, fitness: function, pop_size: int=5, gen_len: int=10):
         '''
         Parameters
         ----------
@@ -44,32 +45,30 @@ class Canonical(Algorithm):
         '''
         super().__init__(kernel, fitness, pop_size, gen_len)
 
-    def memory_update(self, current_pop, t):
+    def memory_update(self, weighted_pop: list, t: int) -> None:
         '''
         This function updates algorithm's memory list.
 
         Parameters
         ----------
-        fittest : list
-            This parameter contains the genotype of the fittest individual of current population.
-        fitness : float
-            This parameter contains the fitness of the fittest individual of current population.
+        weighted_pop : list
+            This parameter contains evaluated current population 
         t : int
             This parameter contains number of generation.
         '''
-        fittest, fitness = current_pop[0]
+        fittest, fitness = weighted_pop[0]
         if self._get_fittest() is None and self._get_max_fitness() is None:
                 self._set_fittest(fittest)
                 self._set_max_fitness(fitness)
         elif fitness > self._get_max_fitness():
             self._set_fittest(fittest)
             self._set_max_fitness(fitness)
-        self._set_current([x[0] for x in current_pop])
+        self._set_current([x[0] for x in weighted_pop])
         self._add_to_memory([self._get_max_fitness(), t])
         
         return
 
-    def evaluate(self, T=100, p_mut=.5, p_gene_mut=.5):
+    def evaluate(self, T: int=100, p_gene_mut: float=.5, p_mut: float=.5) -> list:
         '''
         Parameters
         ----------
@@ -83,7 +82,7 @@ class Canonical(Algorithm):
         Returns
         -------
         list
-            returns the fittest individual among all generations
+            returns the fittest individual among all generations.
         '''
         t = 0
         init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
