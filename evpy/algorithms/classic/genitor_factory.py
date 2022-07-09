@@ -3,8 +3,8 @@ from evpy.algorithms.base.algorithm_factory import AlgorithmFactory
 
 
 class GenitorFactory(AlgorithmFactory):
-    def __init__(self, builder=make_genitor, supported_commands=None):
-        super().__init__(builder, supported_commands)
+    def __init__(self, algorithm_builder=make_genitor, supported_commands=None):
+        super().__init__(algorithm_builder, supported_commands)
 
     def build_genitor(self, mutator: str, recombinator: str, fitness_function, pop_size=5, gen_len=10):
 

@@ -3,10 +3,13 @@ from evpy.wrappers.decorators.command_factory import CommandFactory
 
 
 class KernelFactory:
-    def __init__(self, factory_func=make_kernel):
+    def __init__(self, kernel_builder: callable = None, command_builder: callable = None):
 
-        self.builder = factory_func         # The factory function for Kernel
-        self.supplier = CommandFactory()    # The factory function for Commands
+        if not kernel_builder:
+            kernel_builder = make_kernel
+
+        self.builder = kernel_builder         # The factory function for Kernel
+        self.supplier = CommandFactory(command_builder)    # The factory function for Commands
 
     def __build_part(self, command):
 
