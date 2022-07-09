@@ -15,6 +15,13 @@ class AlgorithmBase:
         self.__current_population = None
         self.__fittest = None
         self.__max_fitness = None
+        self.__convergence_time = None
+
+    def _get_convergence_time(self):
+        return self.__convergence_time
+
+    def _set_convergence_time(self, time):
+        self.__convergence_time = time
 
     def _get_fitness(self):
         return self.__get_fitness
