@@ -1,7 +1,8 @@
 from evpy.algorithms.base.algorithm import Algorithm
 from evpy.wrappers.facade.kernel import Kernel
-from random import randint, sample, random
 
+from time import perf_counter
+from random import randint, sample, random
 
 def make_canonical(kernel: Kernel, fitness: callable, pop_size: int, gen_len: int):
     return Canonical(kernel, fitness, pop_size, gen_len)
@@ -68,7 +69,7 @@ class Canonical(Algorithm):
         
         return
 
-    def evaluate(self, T: int=100, p_gene_mut: float=.5, p_mut: float=.5) -> list:
+    def evaluate(self, T: int=2000, p_gene_mut: float=.5, p_mut: float=.5) -> list:
         '''
         Parameters
         ----------
@@ -84,11 +85,14 @@ class Canonical(Algorithm):
         list
             returns the fittest individual among all generations.
         '''
+        starting_point = perf_counter()
         t = 0
-        init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
+        if self._get_current() == None:
+            init_population = [[randint(0, 1) for y in range(self._get_gen_length())] for x in range(self._get_pop_size())]
+        else:
+            init_population = self._get_current()
         weighted_pop = [[x, self._get_fitness()(x)] for x in init_population]
         weighted_pop.sort(key=lambda x: x[1], reverse=True)
-        
         while t < T:
             print(f"Generation: {t}/{T}") if t % (T//10) == 0 else None
             self.memory_update(weighted_pop, t)
@@ -112,5 +116,7 @@ class Canonical(Algorithm):
             weighted_pop.sort(key=lambda x: x[1], reverse=True)
             t += 1
         self.memory_update(weighted_pop, t)
-        
+        ending_point = perf_counter()
+        self._set_convergence_time(round(ending_point - starting_point, 2))
+        print(f"Model took {self._get_convergence_time()} second(s) to converge. [Canonical Model]")
         return self._get_fittest()
