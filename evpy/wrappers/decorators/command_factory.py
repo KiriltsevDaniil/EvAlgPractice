@@ -3,7 +3,7 @@ from evpy.wrappers.decorators.command import make_command
 
 class CommandFactory:
     def __init__(self, command_builder: callable = None):
-        if not command_builder:
+        if command_builder is None:
             command_builder = make_command
 
         self.__builder = command_builder

@@ -5,7 +5,7 @@ from evpy.wrappers.decorators.command_factory import CommandFactory
 class KernelFactory:
     def __init__(self, kernel_builder: callable = None, command_builder: callable = None):
 
-        if not kernel_builder:
+        if kernel_builder is None:
             kernel_builder = make_kernel
 
         self.builder = kernel_builder         # The factory function for Kernel
