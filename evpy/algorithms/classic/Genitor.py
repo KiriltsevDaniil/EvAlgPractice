@@ -4,7 +4,7 @@ from evpy.algorithms.base.algorithm import Algorithm
 from random import randint, random
 
 
-def make_genitor(kernel: Kernel, fitness: function, pop_size: int, gen_len: int):
+def make_genitor(kernel: Kernel, fitness: callable, pop_size: int, gen_len: int):
     return Genitor(kernel, fitness, pop_size, gen_len)
 
 
@@ -31,7 +31,7 @@ class Genitor(Algorithm):
     __gen_length : int
         This attribute contains word length of genes.
     '''
-    def __init__(self, kernel: Kernel, fitness: function, pop_size: int=5, gen_len: int=10):
+    def __init__(self, kernel: Kernel, fitness: callable, pop_size: int=5, gen_len: int=10):
         super().__init__(kernel, fitness, pop_size, gen_len)
 
     def memory_update(self, weighted_pop: list, t: int) -> None:
