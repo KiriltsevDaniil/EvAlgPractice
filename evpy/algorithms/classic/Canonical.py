@@ -91,7 +91,7 @@ class Canonical(Algorithm):
         weighted_pop.sort(key=lambda x: x[1], reverse=True)
         
         while t < T:
-            print(f"{int((t/T)*100)}% completed")
+            print(f"Generation: {t}/{T}") if t % (T//10) == 0 else None
             self.memory_update(weighted_pop, t)
 
             # Choosing parents

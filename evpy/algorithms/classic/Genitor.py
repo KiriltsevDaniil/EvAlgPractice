@@ -25,7 +25,7 @@ class Genitor(Algorithm):
             if i == (len(weighted_pop) - 1) and weighted_pop[i][1] == weighted_pop[i-1][1]:
                 equilibrium = True
         while not equilibrium and t < T:
-            print(t)
+            print(f"Generation: {t}/{T}") if t % (T//10) == 0 else None
             if self._get_fittest() is None and self._get_max_fitness() is None:
                 self._set_fittest(weighted_pop[0][0])
                 self._set_max_fitness(weighted_pop[0][1])
@@ -43,10 +43,8 @@ class Genitor(Algorithm):
 
             weighted_pop.sort(key=lambda x: x[1], reverse=True)
             for i in range(1, len(weighted_pop)):
-                if weighted_pop[i][1] != weighted_pop[i-1][1]:
-                    break
-                if i == (len(weighted_pop) - 1) and weighted_pop[i][1] == weighted_pop[i-1][1]:
-                    equilibrium = True
+                if weighted_pop[i][1] != weighted_pop[i-1][1]: break
+                if i == (len(weighted_pop) - 1) and weighted_pop[i][1] == weighted_pop[i-1][1]: equilibrium = True
             t += 1
 
         if self._get_fittest() is None and self._get_max_fitness() is None:
