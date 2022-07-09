@@ -21,4 +21,4 @@ class GenitorFactory(ClassicFactory):
                     "population_selector": None,
                     "parent_selector": "random_couple"}
 
-        return self._build_algorithm(commands, fitness_function, pop_size, gen_len)
+        return self._build_classic(commands, fitness_function, pop_size, gen_len)
