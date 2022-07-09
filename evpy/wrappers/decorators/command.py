@@ -1,5 +1,5 @@
 # factory method for Command
-def make_command(function):
+def make_command(function: callable):
     return Command(function)
 
 

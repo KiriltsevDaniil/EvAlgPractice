@@ -1,6 +1,8 @@
 from evpy.wrappers.decorators.command import Command
 
-def make_kernel(mutator_func=None, recomb_func=None, pop_func=None, parent_func=None):
+
+def make_kernel(mutator_func: Command = None, recomb_func: Command = None, pop_func: Command = None,
+                parent_func: Command = None):
     return Kernel(mutator_func, recomb_func, pop_func, parent_func)
 
 

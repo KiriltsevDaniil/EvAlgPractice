@@ -1,12 +1,13 @@
 from evpy.algorithms.classic.Canonical import make_canonical
+from evpy.wrappers.decorators.command_list import CommandList
 from evpy.algorithms.base.algorithm_factory import AlgorithmFactory
 
 
 class CanonicalFactory(AlgorithmFactory):
-    def __init__(self, algorithm_builder=make_canonical, supported_commands=None):
+    def __init__(self, algorithm_builder: callable = make_canonical, supported_commands: CommandList = None):
         super().__init__(algorithm_builder, supported_commands)
 
-    def build_canonical(self, fitness_function, pop_size=5, gen_len=10):
+    def build_canonical(self, fitness_function: callable, pop_size: int = 5, gen_len: int = 10):
         commands = {"mutation": "point_mutation",
                     "recombination": "single_point_crossover",
                     "population_selector": None,
