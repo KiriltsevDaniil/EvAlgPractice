@@ -3,7 +3,7 @@ from evpy.wrappers.facade.kernel import Kernel
 from random import randint, sample, random
 
 
-def make_canonical(kernel: Kernel, fitness: function, pop_size: int, gen_len: int):
+def make_canonical(kernel: Kernel, fitness: callable, pop_size: int, gen_len: int):
     return Canonical(kernel, fitness, pop_size, gen_len)
 
 
@@ -30,7 +30,7 @@ class Canonical(Algorithm):
     __gen_length : int
         This attribute contains word length of genes.
     '''
-    def __init__(self, kernel: Kernel, fitness: function, pop_size: int=5, gen_len: int=10):
+    def __init__(self, kernel: Kernel, fitness: callable, pop_size: int=5, gen_len: int=10):
         '''
         Parameters
         ----------
