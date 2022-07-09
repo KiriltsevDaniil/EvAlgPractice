@@ -1,9 +1,9 @@
 from evpy.algorithms.classic.Genitor import make_genitor
 from evpy.wrappers.decorators.command_list import CommandList
-from evpy.algorithms.base.algorithm_factory import AlgorithmFactory
+from evpy.algorithms.base.classic_factory import ClassicFactory
 
 
-class GenitorFactory(AlgorithmFactory):
+class GenitorFactory(ClassicFactory):
     def __init__(self, algorithm_builder: callable = make_genitor, supported_commands: CommandList = None):
         super().__init__(algorithm_builder, supported_commands)
 

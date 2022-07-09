@@ -1,9 +1,9 @@
-from evpy.algorithms.base.algorithm import make_algorithm
+from evpy.algorithms.base.classic import make_classic
 from evpy.wrappers.decorators.command_list import CommandList
 from evpy.wrappers.facade.kernel_factory import KernelFactory
 
 
-class AlgorithmFactory:
+class ClassicFactory:
     def __init__(self, algorithm_builder: callable = None, kernel_builder: callable = None,
                  command_builder: callable = None, supported_commands: CommandList = None):
 
@@ -11,7 +11,7 @@ class AlgorithmFactory:
             supported_commands = CommandList()
 
         if not algorithm_builder:
-            algorithm_builder = make_algorithm
+            algorithm_builder = make_classic
 
         self.__supported = supported_commands
         self.__supplier = KernelFactory(kernel_builder, command_builder)

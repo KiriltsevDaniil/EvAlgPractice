@@ -1,5 +1,5 @@
 from evpy.wrappers.facade.kernel import Kernel
-from evpy.algorithms.base.algorithm import Algorithm
+from evpy.algorithms.base.classic import Classic
 
 from time import perf_counter
 from random import randint, random
@@ -9,7 +9,7 @@ def make_genitor(kernel: Kernel, fitness: callable, pop_size: int, gen_len: int)
     return Genitor(kernel, fitness, pop_size, gen_len)
 
 
-class Genitor(Algorithm):
+class Genitor(Classic):
     '''
     Genitor GA (Whitley's model)
 

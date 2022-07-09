@@ -1,4 +1,4 @@
-from evpy.algorithms.base.algorithm import Algorithm
+from evpy.algorithms.base.classic import Classic
 from evpy.wrappers.facade.kernel import Kernel
 
 from time import perf_counter
@@ -9,7 +9,7 @@ def make_canonical(kernel: Kernel, fitness: callable, pop_size: int, gen_len: in
     return Canonical(kernel, fitness, pop_size, gen_len)
 
 
-class Canonical(Algorithm):
+class Canonical(Classic):
     '''
     Canonical GA (Holland's model)
     
