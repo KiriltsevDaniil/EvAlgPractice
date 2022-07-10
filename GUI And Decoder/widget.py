@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 from datetime import datetime
 
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
+from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
      QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
      QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
 from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush
@@ -56,6 +56,7 @@ class Widget(QWidget):
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
+        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
 
@@ -65,6 +66,8 @@ class Widget(QWidget):
         self.HelpBtn.clicked.connect(self.help)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
+        self.ImportBtn.clicked.connect(self.importFile)
+
         #
         # Set First Dialog UI
         #
@@ -196,6 +199,9 @@ class Widget(QWidget):
         self.HelpBtn.setEnabled(False)
         self.HelpDialog.exec_()
         self.HelpBtn.setEnabled(True)
+
+    def importFile(self):
+        filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
 
     def testfunc(self):
         self.RunBtn.setEnabled(False)
