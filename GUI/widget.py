@@ -3,11 +3,11 @@ import os
 import sys
 from pathlib import Path
 from datetime import datetime
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
-     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, QFileDialog, \
+from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
+     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
      QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
 from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush
-from PySide2.QtCore import QFile, QRegExp, QPoint, Qt, QFile
+from PySide2.QtCore import QFile, QRegExp, QPoint, Qt
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
@@ -58,6 +58,7 @@ class Widget(QWidget):
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
+        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
 
         # Add functionality
         self.ExitBtn.clicked.connect(self.close)
