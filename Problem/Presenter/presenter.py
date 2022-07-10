@@ -14,12 +14,18 @@ class Presenter:
 
         self.model = Model()
         self.View = Widget()
+        self.View.set_model(self.recieve_data)
 
     def gui(self):
 
         self.View.show()
         self.View.setFixedSize(self.View.size())
         sys.exit(self.app.exec_())
+
+    def recieve_data(self, band_width: int, rects: list):
+        self.model.process_data(band_width, rects)
+        return self.model.solve()    # last population, not fittest
+
 
 
 pres = Presenter()
