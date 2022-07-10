@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/resources">
+        <file>img/unchecked.png</file>
+        <file>img/checked.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>../../1575947275_35-64-14907.jpg</file>
+    </qresource>
+</RCC>

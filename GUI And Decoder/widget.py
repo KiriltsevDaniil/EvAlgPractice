@@ -1,13 +1,14 @@
 # This Python file uses the following encoding: utf-8
 import os
-import sys
 from pathlib import Path
+import sys
 from datetime import datetime
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
-     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, QFileDialog, \
+
+from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
+     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
      QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
 from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush
-from PySide2.QtCore import QFile, QRegExp, QPoint, Qt, QFile
+from PySide2.QtCore import QFile, QRegExp, QPoint, Qt
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
@@ -19,7 +20,6 @@ from VariableLine import VariableLine
 class Widget(QWidget):
     def __init__(self):
         super(Widget, self).__init__()
-
         self.load_ui()
         appIcon = QIcon("icon3.png")
         self.setWindowIcon(appIcon)
@@ -52,23 +52,22 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
-        self.WResizeBtn = self.findChild(QPushButton, 'WResizeBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
+        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
 
         # Add functionality
         self.ExitBtn.clicked.connect(self.close)
         self.TrayBtn.clicked.connect(self.showMinimized)
-        self.ImportBtn.clicked.connect(self.importFile)
         self.HelpBtn.clicked.connect(self.help)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
-        self.WResizeBtn.clicked.connect(self.ScreenResize)
         self.ImportBtn.clicked.connect(self.importFile)
+
         #
         # Set First Dialog UI
         #
@@ -124,7 +123,6 @@ class Widget(QWidget):
         #
         self.setWindowTitle('Stock problem')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-
         self.StepBtn.setEnabled(False)
 
     def mousePressEvent(self, event):
@@ -205,7 +203,6 @@ class Widget(QWidget):
     def importFile(self):
         filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
 
-
     def testfunc(self):
         self.RunBtn.setEnabled(False)
         if not self.inExecution: # start execution
@@ -227,7 +224,7 @@ class Widget(QWidget):
                         self.inExecution = True
                         #
                         # run alg
-                        #self.sendData(Width, RectWH)
+                        #
                         self.setProgress(50)
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
@@ -235,7 +232,6 @@ class Widget(QWidget):
             self.RunBtn.setEnabled(True)
             self.StepBox.setEnabled(True)
             self.RunBtn.setText('Run')
-            self.RunBtn.setEnabled(False)
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
@@ -247,7 +243,7 @@ class Widget(QWidget):
         self.Canvas.addRect(0, 0, 500, 100)
         self.Canvas.addRect(0, 50, 50, 50)
 
-if __name__=='__main__':
+if __name__ == "__main__":
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
     widget = Widget()

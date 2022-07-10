@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>610</width>
+    <height>334</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+background-color: rgb(3, 4, 19);
+border: 2px solid rgb(121, 121, 121);
+}</string>
+  </property>
+  <widget class="QPushButton" name="CloseBtn">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>260</y>
+     <width>131</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-radius: 20px;
+background-color:  #252984;
+color: white;
+font: bold 25px;</string>
+   </property>
+   <property name="text">
+    <string>Close</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="HelpText">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>561</width>
+     <height>230</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPlainTextEdit 
+{
+	background-color: rgb(3, 4, 19);
+	border: none;
+	color: white;
+}
+
+QScrollBar:vertical
+{
+	background: #1D253D;
+	border: 0px solid red;
+	border-radius: 7px;
+}
+
+QScrollBar::handle:vertical
+{
+	background: #C6C8CE;
+	border: 0px solid red;
+	border-radius: 7px;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical
+{
+	height: 0px;
+}
+</string>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="sizeAdjustPolicy">
+    <enum>QAbstractScrollArea::AdjustToContents</enum>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+   <property name="plainText">
+    <string notr="true">How to use the app:
+
+1. Upload data though pop up window or using import button
+2. Choose  the Alg's type in the box next to Help button
+3. Click on Run and check parametrs or change it
+4. Finish the GA or run the app step by step, using checkbox with tje following name
+
+The progress bar below buttons is indicating a state of GA. In order to change Variables click on each and scroll.
+
+ Enjoy, dude </string>
+   </property>
+   <property name="textInteractionFlags">
+    <set>Qt::NoTextInteraction</set>
+   </property>
+   <property name="backgroundVisible">
+    <bool>false</bool>
+   </property>
+   <property name="centerOnScroll">
+    <bool>false</bool>
+   </property>
+   <property name="placeholderText">
+    <string/>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

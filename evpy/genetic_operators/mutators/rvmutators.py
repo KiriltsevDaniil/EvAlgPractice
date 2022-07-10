@@ -8,4 +8,5 @@ def real_valued_mutation(individual, n=None, m=10, h=10):
     sigma = sum([pow(2, -x) for x in range(m) if random() <= (1/m)])
     for i in range(len(individual)):
         individual[i] = individual[i] + (blinker * alpha * sigma) if random() <= n else individual[i]
-        
+
+    return individual
