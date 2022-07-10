@@ -90,9 +90,16 @@ QScrollBar::sub-page:vertical
     <bool>true</bool>
    </property>
    <property name="plainText">
-    <string notr="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet mi eget sapien molestie, vel semper leo eleifend. Praesent tincidunt quam vel ipsum tempor porttitor. Vestibulum faucibus sem mauris, in tempor dolor iaculis eu. Pellentesque sapien velit, consectetur ac massa id, maximus varius ante. Nam consectetur dolor quis maximus lacinia. Curabitur tempus condimentum nisl sit amet efficitur. Praesent vel leo tincidunt sapien iaculis lacinia eu quis dui.
+    <string notr="true">How to use the app:
 
-Vivamus pulvinar dolor non molestie dignissim. Cras a elit nec arcu hendrerit faucibus. Proin sit amet neque mauris. Fusce sit amet enim in lorem tempor scelerisque ut ut lorem. Donec lacinia nulla eu lacus ultricies, quis </string>
+1. Upload data though pop up window or using import button
+2. Choose  the Alg's type in the box next to Help button
+3. Click on Run and check parametrs or change it
+4. Finish the GA or run the app step by step, using checkbox with tje following name
+
+The progress bar below buttons is indicating a state of GA. In order to change Variables click on each and scroll.
+
+ Enjoy, dude </string>
    </property>
    <property name="textInteractionFlags">
     <set>Qt::NoTextInteraction</set>

@@ -6,26 +6,32 @@ from datetime import datetime
 
 from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
      QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
-     QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel# for Collapsible Box
-from PySide2.QtGui import QRegExpValidator, QIcon, QMouseEvent, QPaintDevice
-from PySide2.QtCore import QFile, QRegExp, QPoint, QObject
+     QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
+from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush
+from PySide2.QtCore import QFile, QRegExp, QPoint, Qt
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
 from CollapsibleBox import CollapsibleBox
+from VariableLine import VariableLine
+
+
 
 class Widget(QWidget):
     def __init__(self):
         super(Widget, self).__init__()
-
         self.load_ui()
         appIcon = QIcon("icon3.png")
         self.setWindowIcon(appIcon)
         self.inExecution = False
-        self.setVariablesBox()
-        self.setPopulationBox()
+        VarTest ={'T': 15, 'B': 13, 'C': 4, 'A': 15, 'D': 13, 'E': 4, 'F': 15, 'G': 13, 'H': 4}
+        self.setVariablesBox(VarTest)
+        PopTest = {1: [1, 2, 0, 0, True], 2: [2, 2, 0, 0], 3: [31, 22, 0, 0], 4: [31, 22, 0, 0], 5: [1123, 32, 0, 0],
+                   6: [2571, 2572472, 0, 0], 7: [12572, 4372, 0, 0], 8: [1251, 152, 0, 0], 9: [1241, 1242, 0, 0], 10: [141, 42, 0, 0]}
+        self.setPopulationBox(PopTest)
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
+        self.drawTest()
 
     def load_ui(self):
         #
@@ -46,11 +52,11 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
-        self.WResizeBtn = self.findChild(QPushButton, 'WResizeBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
+        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
 
@@ -60,8 +66,8 @@ class Widget(QWidget):
         self.HelpBtn.clicked.connect(self.help)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
-        self.WResizeBtn.clicked.connect(self.ScreenResize)
         self.ImportBtn.clicked.connect(self.importFile)
+
         #
         # Set First Dialog UI
         #
@@ -117,9 +123,7 @@ class Widget(QWidget):
         #
         self.setWindowTitle('Stock problem')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-
         self.StepBtn.setEnabled(False)
-
 
     def mousePressEvent(self, event):
         self.oldPosition = event.globalPos()
@@ -128,14 +132,14 @@ class Widget(QWidget):
         delta = QPoint(event.globalPos() - self.oldPosition)
         self.move(self.x() + delta.x(), self.y() + delta.y())
         self.oldPosition = event.globalPos()
-        self.HelpDialog.move(250,250)
-        self.FirstDialog.move(250,250)
-        self.SecondDialog.move(250,250)
+        self.HelpDialog.move(250, 250)
+        self.FirstDialog.move(250, 250)
+        self.SecondDialog.move(250, 250)
 
-    def appendStringToLog(self, str):
+    def appendStringToLog(self, line):
         Time = datetime.now()
         TimeForm = Time.strftime("%H:%M:%S")
-        log = f"[{TimeForm}] {str}"
+        log = f"[{TimeForm}] {line}"
         self.LogConsole.appendPlainText(log)
 
     def clearLog(self):
@@ -147,26 +151,23 @@ class Widget(QWidget):
     def stepClicked(self):
         self.appendStringToLog('step btn clicked')
 
-    def ScreenResize(self):
-        screen = QApplication().desktop().availableGeometry() #singletone prob
-
-    def setPopulationBox(self):
+    def setPopulationBox(self, data): # supposed to be a dict solNumber: list
         content = QWidget()
         self.PopulationBox.setWidget(content)
         self.PopulationBox.setWidgetResizable(True)
         vlay = QVBoxLayout(content)
         # "Root" layer
-        for i in range(1, 11):
-            if i == 1:
-                box = CollapsibleBox(f"Solution {i}", True) # Box represents "Root" and inner objects
+        for key in data:
+            if len(data[key]) == 5 and data[key][4] == True:
+                box = CollapsibleBox(f"Solution {key}", True) # Box represents "Root" and inner objects
             else:
-                box = CollapsibleBox(f"Solution {i}")
+                box = CollapsibleBox(f"Solution {key}")
             vlay.addWidget(box)
             lay = QVBoxLayout()
             # Inside layer
-            labels = [QLabel(f"Width      {2}"),
-                      QLabel(f"Waste      {14}"),
-                      QLabel(f"Parents    {1}, {4}")]
+            labels = [QLabel(f"Length     {data[key][0]}"),
+                      QLabel(f"Waste      {data[key][1]}"),
+                      QLabel(f"Parents    {data[key][2]}, {data[key][3]}")]
             for j in range(3):
                 labels[j].setStyleSheet("color : white; font: bold; margin-left: 10px;")
                 labels[j].setAlignment(QtCore.Qt.AlignLeft)
@@ -174,78 +175,63 @@ class Widget(QWidget):
             box.setContentLayout(lay)
         vlay.addStretch()
 
-    def setVariablesBox(self):
+    def setVariablesBox(self, data): # supposed to be a dict string: val
         content = QWidget()
         self.VariablesBox.setWidget(content)
         self.VariablesBox.setWidgetResizable(True)
         vlay = QVBoxLayout(content)
         # "Root" layer
-        for i in range(1):
-            title = "GA parameters"
-            if i == 1:
-                title = "Other parameters"
-            box = CollapsibleBox(title) # Box represents "Root" and inner objects
-            vlay.addWidget(box)
-            lay = QVBoxLayout()
-            # Inside layer
-            for j in range(1, 3):
-                InLay = QHBoxLayout()
-                label = QLabel(f"Data {j}")
-                label.setStyleSheet("color : white; font: bold;")
-                label.setAlignment(QtCore.Qt.AlignCenter)
-                spinbox = QSpinBox()
-                spinbox.setStyleSheet("""
-                QSpinBox {
-                border: 0px solid #797979;
-                font: bold;
-                color: white;
-                }
-
-                QSpinBox::up-button {
-                    width: 0;
-                    height: 0;
-                }
-                QSpinBox::down-button {
-                    width: 0;
-                    height: 0;
-                }
-                """)
-                InLay.addWidget(label)
-                InLay.addWidget(spinbox)
-                lay.addLayout(InLay)
-            box.setContentLayout(lay)
+        title = "GA parameters"
+        box = CollapsibleBox(title) # Box represents "Root" and inner objects
+        vlay.addWidget(box)
+        lay = QVBoxLayout()
+        # Inside layer
+        for key in data:
+            InLay = VariableLine(key, data[key], self.changeParam)
+            lay.addLayout(InLay)
+        box.setContentLayout(lay)
         vlay.addStretch()
 
+    def changeParam(self, key, val):
+        self.appendStringToLog(f"changeParam invoked: user wants to change this parameter: {key, val}")
 
     def help(self):
         self.HelpBtn.setEnabled(False)
         self.HelpDialog.exec_()
         self.HelpBtn.setEnabled(True)
 
-
     def importFile(self):
         filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
-
 
     def testfunc(self):
         self.RunBtn.setEnabled(False)
         if not self.inExecution: # start execution
+            self.FirstDialog.WidthSpinBox.setValue(1)
+            self.FirstDialog.NumSpinBox.setValue(1)
             if self.FirstDialog.exec_():
                 self.SecondDialog.RectLine.clear()
                 if self.SecondDialog.exec_():
-                    self.FirstDialog.WidthSpinBox.value()
-                    if self.StepBox.isChecked():
-                        self.StepBtn.setEnabled(True)
-                        self.StepBtn.setFlat(False)
-                    self.StepBox.setEnabled(False)
-                    self.RunBtn.setText('Finish')
-                    self.inExecution = True
-                    # run alg
-                    self.setProgress(50)
+                    RectWH = list(map(int, self.SecondDialog.RectLine.text().split()))
+                    Width = self.FirstDialog.WidthSpinBox.value()
+                    Num = self.FirstDialog.NumSpinBox.value()
+                    if len(RectWH) == Num * 2 and 0 not in RectWH:
+                        self.RunBtn.setEnabled(True)
+                        if self.StepBox.isChecked():
+                            self.StepBtn.setEnabled(True)
+                            self.StepBtn.setFlat(False)
+                        self.StepBox.setEnabled(False)
+                        self.RunBtn.setText('Finish')
+                        self.inExecution = True
+                        #
+                        # run alg
+                        #
+                        self.setProgress(50)
+                    else:
+                        self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
+            self.RunBtn.setEnabled(True)
             self.StepBox.setEnabled(True)
             self.RunBtn.setText('Run')
-            self.RunBtn.setEnabled(False)
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
@@ -253,11 +239,14 @@ class Widget(QWidget):
         self.appendStringToLog('testfunc executed')
         self.RunBtn.setEnabled(True)
 
+    def drawTest(self):
+        self.Canvas.addRect(0, 0, 500, 100)
+        self.Canvas.addRect(0, 50, 50, 50)
 
 if __name__ == "__main__":
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
     widget = Widget()
     widget.show()
-#    widget.setFixedSize(widget.size())
+    widget.setFixedSize(widget.size())
     sys.exit(app.exec_())
