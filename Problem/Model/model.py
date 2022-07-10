@@ -16,7 +16,7 @@ class Model:
         pass
         # genetic algorithm here
 
-    def recieve_data(self, band_width: int, rects: list):
+    def process_data(self, band_width: int, rects: list):
         self.band_width = band_width
         max_length, rect_area = 0, 0
 

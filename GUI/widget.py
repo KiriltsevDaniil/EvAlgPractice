@@ -11,9 +11,8 @@ from PySide2.QtCore import QFile, QRegExp, QPoint, Qt, QFile
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
-from CollapsibleBox import CollapsibleBox
-from VariableLine import VariableLine
-
+from GUI.CollapsibleBox import CollapsibleBox
+from GUI.VariableLine import VariableLine
 
 
 class Widget(QWidget):
@@ -67,7 +66,6 @@ class Widget(QWidget):
         self.HelpBtn.clicked.connect(self.help)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
-        self.WResizeBtn.clicked.connect(self.ScreenResize)
         self.ImportBtn.clicked.connect(self.importFile)
         #
         # Set First Dialog UI
@@ -137,6 +135,9 @@ class Widget(QWidget):
         self.HelpDialog.move(250, 250)
         self.FirstDialog.move(250, 250)
         self.SecondDialog.move(250, 250)
+
+    def set_model(self, model):
+        self.model = model
 
     def appendStringToLog(self, line):
         Time = datetime.now()
@@ -222,13 +223,12 @@ class Widget(QWidget):
                         if self.StepBox.isChecked():
                             self.StepBtn.setEnabled(True)
                             self.StepBtn.setFlat(False)
-                        self.StepBox.setEnabled(False)
-                        self.RunBtn.setText('Finish')
-                        self.inExecution = True
+                            self.StepBox.setEnabled(False)
+                            self.RunBtn.setText('Finish')
+                            self.inExecution = True
                         #
                         # run alg
-                        #self.sendData(Width, RectWH)
-                        self.setProgress(50)
+                        data = self.model(Width, RectWH)
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
