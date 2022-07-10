@@ -28,9 +28,6 @@
     <height>16777215</height>
    </size>
   </property>
-  <property name="mouseTracking">
-   <bool>true</bool>
-  </property>
   <property name="windowTitle">
    <string notr="true">Stock problem</string>
   </property>
