@@ -6,6 +6,7 @@ class Solution:
 
         self.__parents = None
         self.__rectangles = rectangles
+        self.__coordinates = None
         self.__band_length = -1
         self.__waste = -1
 
@@ -24,7 +25,7 @@ class Solution:
     def get_parents(self):
         return self.__parents
 
-    def set_parents(self, parents: list[list[int]]):
+    def set_parents(self, parents):
         self.__parents = parents
 
     def get_length(self):
@@ -41,3 +42,9 @@ class Solution:
 
     def get_rectangles(self):
         return self.__rectangles
+    
+    def get_coordinates(self):
+        return self.__coordinates
+    
+    def set_coordinates(self, coordinates):
+        self.__coordinates = coordinates

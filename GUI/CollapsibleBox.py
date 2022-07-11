@@ -41,19 +41,19 @@ class CollapsibleBox(QWidget):
             else QtCore.QAbstractAnimation.Backward)
         self.Animation.start()
 
-    def setContentLayout(self, layout):
+    def setContentLayout(self, layout, content_additional_height = 0):
         lay = self.contentArea.layout()
         del lay
         self.contentArea.setLayout(layout)
-        collapsed_height = (self.sizeHint().height() - self.contentArea.maximumHeight())
-        content_height = layout.sizeHint().height()
+        self.collapsed_height = (self.sizeHint().height() - self.contentArea.maximumHeight())
+        self.content_height = layout.sizeHint().height() + content_additional_height
         for i in range(self.Animation.animationCount()):
             animation = self.Animation.animationAt(i)
             animation.setDuration(500)
-            animation.setStartValue(collapsed_height)
-            animation.setEndValue(collapsed_height + content_height)
+            animation.setStartValue(self.collapsed_height)
+            animation.setEndValue(self.collapsed_height + self.content_height)
 
         content_animation = self.Animation.animationAt(self.Animation.animationCount() - 1)
         content_animation.setDuration(500)
         content_animation.setStartValue(0)
-        content_animation.setEndValue(content_height)
+        content_animation.setEndValue(self.content_height)

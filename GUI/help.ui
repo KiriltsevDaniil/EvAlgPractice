@@ -90,9 +90,20 @@ QScrollBar::sub-page:vertical
     <bool>true</bool>
    </property>
    <property name="plainText">
-    <string notr="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin laoreet mi eget sapien molestie, vel semper leo eleifend. Praesent tincidunt quam vel ipsum tempor porttitor. Vestibulum faucibus sem mauris, in tempor dolor iaculis eu. Pellentesque sapien velit, consectetur ac massa id, maximus varius ante. Nam consectetur dolor quis maximus lacinia. Curabitur tempus condimentum nisl sit amet efficitur. Praesent vel leo tincidunt sapien iaculis lacinia eu quis dui.
+    <string notr="true">How to use the app:
+To run the algorithm, input data by clicking on the 'Run' button or import data from a text file. 
 
-Vivamus pulvinar dolor non molestie dignissim. Cras a elit nec arcu hendrerit faucibus. Proin sit amet neque mauris. Fusce sit amet enim in lorem tempor scelerisque ut ut lorem. Donec lacinia nulla eu lacus ultricies, quis </string>
+When importing from a file, it must follow a specified style. File must contain a single line with values separated by spaces in the following order: 
+"stock_width rectangles_number width_1 height_1 width_2 height_2 ..." 
+(e. g. "10 3 5 6 2 2 1 9", where 10 - stock width, 3 - number of rectangles
+and "5 6", "2 2" and "1 9" are widths and heights of the rectangles respectively). 
+
+It is possible to change some parameters in the 'Variables' window by clicking on a value and scrolling/rewriting it. To commit the changed value, press enter.
+
+The user can enable 'step by step' mode, in which algorithm will execute a single step when the 'Step' button is pressed and will execute the remaining steps
+when the 'Finish' button is pressed (the 'Run' button).
+
+Enjoy!</string>
    </property>
    <property name="textInteractionFlags">
     <set>Qt::NoTextInteraction</set>

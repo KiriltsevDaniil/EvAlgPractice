@@ -16,21 +16,25 @@ from GUI.VariableLine import VariableLine
 
 
 class Widget(QWidget):
-    def __init__(self):
+    def __init__(self, testing=False):
         super(Widget, self).__init__()
 
         self.load_ui()
         appIcon = QIcon("icon3.png")
         self.setWindowIcon(appIcon)
         self.inExecution = False
-        VarTest ={'T': 15, 'B': 13, 'C': 4, 'A': 15, 'D': 13, 'E': 4, 'F': 15, 'G': 13, 'H': 4}
-        self.setVariablesBox(VarTest)
-        PopTest = {1: [1, 2, 0, 0, True], 2: [2, 2, 0, 0], 3: [31, 22, 0, 0], 4: [31, 22, 0, 0], 5: [1123, 32, 0, 0],
-                   6: [2571, 2572472, 0, 0], 7: [12572, 4372, 0, 0], 8: [1251, 152, 0, 0], 9: [1241, 1242, 0, 0], 10: [141, 42, 0, 0]}
-        self.setPopulationBox(PopTest)
+        self.testing = testing
+        self.send_data = None
+        self.change_parameter = None
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
-        self.drawTest()
+        if testing:
+            VarTest ={'T': 15, 'B': 13, 'C': 4, 'A': 15, 'D': 13, 'E': 4, 'F': 15, 'G': 13, 'H': 4}
+            self.setVariablesBox(VarTest)
+            PopTest = {1: [1, 2, 0, 0, True], 2: [2, 2, 0, 0], 3: [31, 22, 0, 0], 4: [31, 22, 0, 0], 5: [1123, 32, 0, 0],
+                    6: [2571, 2572472, 0, 0], 7: [12572, 4372, 0, 0], 8: [1251, 152, 0, 0], 9: [1241, 1242, 0, 0], 10: [141, 42, 0, 0]}
+            self.setPopulationBox(PopTest)
+            self.drawTest()
 
     def load_ui(self):
         #
@@ -51,7 +55,6 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
-        self.WResizeBtn = self.findChild(QPushButton, 'WResizeBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
@@ -64,9 +67,8 @@ class Widget(QWidget):
         self.TrayBtn.clicked.connect(self.showMinimized)
         self.ImportBtn.clicked.connect(self.importFile)
         self.HelpBtn.clicked.connect(self.help)
-        self.RunBtn.clicked.connect(self.testfunc)
+        self.RunBtn.clicked.connect(self.execute)
         self.StepBtn.clicked.connect(self.stepClicked)
-        self.ImportBtn.clicked.connect(self.importFile)
         #
         # Set First Dialog UI
         #
@@ -84,7 +86,7 @@ class Widget(QWidget):
         self.FirstDialog.CancelBtn.clicked.connect(self.FirstDialog.reject)
         self.FirstDialog.NextBtn.clicked.connect(self.FirstDialog.accept)
         self.FirstDialog.WidthSpinBox.setMinimum(1)
-        self.FirstDialog.NumSpinBox.setMinimum(1)
+        self.FirstDialog.NumSpinBox.setMinimum(2)
         self.FirstDialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.FirstDialog.hide()
         #
@@ -135,14 +137,16 @@ class Widget(QWidget):
         self.HelpDialog.move(250, 250)
         self.FirstDialog.move(250, 250)
         self.SecondDialog.move(250, 250)
-
-    def set_model(self, model):
-        self.model = model
+    
+    def drawTest(self):
+        self.Canvas.addRect(0, 0, 500, 100)
+        self.Canvas.addRect(0, 50, 50, 50)
 
     def appendStringToLog(self, line):
         Time = datetime.now()
         TimeForm = Time.strftime("%H:%M:%S")
         log = f"[{TimeForm}] {line}"
+        print(f"appendStringToLog: '{line}'")
         self.LogConsole.appendPlainText(log)
 
     def clearLog(self):
@@ -154,29 +158,48 @@ class Widget(QWidget):
     def stepClicked(self):
         self.appendStringToLog('step btn clicked')
 
-    def setPopulationBox(self, data): # supposed to be a dict solNumber: list
+    def setPopulationBox(self, populations): # list of populations
         content = QWidget()
         self.PopulationBox.setWidget(content)
         self.PopulationBox.setWidgetResizable(True)
         vlay = QVBoxLayout(content)
         # "Root" layer
-        for key in data:
-            if len(data[key]) == 5 and data[key][4] == True:
-                box = CollapsibleBox(f"Solution {key}", True) # Box represents "Root" and inner objects
-            else:
-                box = CollapsibleBox(f"Solution {key}")
-            vlay.addWidget(box)
-            lay = QVBoxLayout()
-            # Inside layer
-            labels = [QLabel(f"Length     {data[key][0]}"),
-                      QLabel(f"Waste      {data[key][1]}"),
-                      QLabel(f"Parents    {data[key][2]}, {data[key][3]}")]
-            for j in range(3):
-                labels[j].setStyleSheet("color : white; font: bold; margin-left: 10px;")
-                labels[j].setAlignment(QtCore.Qt.AlignLeft)
-                lay.addWidget(labels[j])
-            box.setContentLayout(lay)
+        population_number = 1
+        for population in populations:
+            population_box = CollapsibleBox("Population {}".format(population_number))
+            vlay.addWidget(population_box)
+            population_lay = QVBoxLayout()
+            
+            solution_number = 1
+            inner_height = 0
+            
+            for solution in population.get_population():
+                if solution_number == 1:
+                    solution_box = CollapsibleBox(f"Solution {solution_number}", True)
+                else:
+                    solution_box = CollapsibleBox(f"Solution {solution_number}")
+                solution_lay = QVBoxLayout()
+                parents = solution.get_parents()
+                if parents is None:
+                    parents = ['None', 'None']
+                solution_labels = [QLabel(f"Length     {solution.get_length()}"),
+                            QLabel(f"Waste      {solution.get_waste()}"),
+                            QLabel(f"Parents    {parents[0]}, {parents[1]}")]
+                for j in range(3):
+                    solution_labels[j].setStyleSheet("color : white; font: bold; margin-left: 10px;")
+                    solution_labels[j].setAlignment(QtCore.Qt.AlignLeft)
+                    solution_lay.addWidget(solution_labels[j])
+                solution_box.setContentLayout(solution_lay)
+                solution_number += 1
+                inner_height += solution_box.content_height
+                population_lay.addWidget(solution_box)
+
+            population_number +=1
+            population_box.setContentLayout(population_lay, inner_height)
+        
         vlay.addStretch()
+
+        self.draw_solution(populations[-1].get_fittest())
 
     def setVariablesBox(self, data): # supposed to be a dict string: val
         content = QWidget()
@@ -190,13 +213,10 @@ class Widget(QWidget):
         lay = QVBoxLayout()
         # Inside layer
         for key in data:
-            InLay = VariableLine(key, data[key], self.changeParam)
+            InLay = VariableLine(key, data[key][0], data[key][1], data[key][2], self.changeParam, data[key][3])
             lay.addLayout(InLay)
         box.setContentLayout(lay)
         vlay.addStretch()
-
-    def changeParam(self, key, val):
-        self.appendStringToLog(f"changeParam invoked: user wants to change this parameter: {key, val}")
 
     def help(self):
         self.HelpBtn.setEnabled(False)
@@ -207,9 +227,10 @@ class Widget(QWidget):
         filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
 
 
-    def testfunc(self):
+    def execute(self):
         self.RunBtn.setEnabled(False)
         if not self.inExecution: # start execution
+            self.setProgress(0)
             self.FirstDialog.WidthSpinBox.setValue(1)
             self.FirstDialog.NumSpinBox.setValue(1)
             if self.FirstDialog.exec_():
@@ -228,7 +249,8 @@ class Widget(QWidget):
                             self.inExecution = True
                         #
                         # run alg
-                        data = self.model(Width, RectWH)
+                        self.send_data(Width, RectWH)
+                        self.appendStringToLog('data sent')
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
@@ -240,12 +262,38 @@ class Widget(QWidget):
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
             self.setProgress(0)
-        self.appendStringToLog('testfunc executed')
+            self.appendStringToLog('finished')
         self.RunBtn.setEnabled(True)
+        self.appendStringToLog('execution ended')
+    
+    def set_send_data(self, slot):
+        self.send_data = slot
+    
+    def set_change_parameter(self, slot):
+        self.change_parameter = slot
+    
+    def changeParam(self, key, val):
+        self.appendStringToLog(f"changeParam invoked: user wants to change this parameter: {key, val}")
+        self.change_parameter(key, val)
 
-    def drawTest(self):
-        self.Canvas.addRect(0, 0, 500, 100)
-        self.Canvas.addRect(0, 50, 50, 50)
+    def receive_population(self, populations):
+        self.appendStringToLog("receive_population")
+        self.setProgress(100)
+        self.setPopulationBox(populations)
+        #setPopulationBox
+
+    def draw_solution(self, solution):
+        mlt = 10
+        self.Canvas.clear()
+        print(self.CanvasView.width(), self.CanvasView.height())
+        self.Canvas.addRect(0, 0, solution.get_length() * mlt, -10 * mlt)
+        #self.Canvas.addRect(0, 0, 5 * mlt, -6 * mlt)
+        for crd in solution.get_coordinates():
+            print(f"crd: x={crd.get_x() * mlt}, y={crd.get_y() * mlt}, width{crd.get_width() * mlt}, height{crd.get_height() * mlt}")
+            self.Canvas.addRect(crd.get_x() * mlt, -(crd.get_y() * mlt), crd.get_width() * mlt, -(crd.get_height() * mlt))
+            
+        
+
 
 if __name__=='__main__':
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
