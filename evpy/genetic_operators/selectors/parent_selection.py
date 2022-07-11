@@ -3,8 +3,10 @@ from random import randint, sample, random
 
 # Structure: we take dirty/clean population, we return lists of pairs of parents
 def random_couple(weighted_population):
+    weighted_population = [[weighted_population[x][0], weighted_population[x][1], x]
+                           for x in range(len(weighted_population))]
     parents = sample(weighted_population, k=2)
-    return [x[0] for x in parents]
+    return [x[2] for x in parents]
 
 
 def panmixia(weighted_population):

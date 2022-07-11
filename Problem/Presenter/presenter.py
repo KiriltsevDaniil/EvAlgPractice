@@ -25,8 +25,3 @@ class Presenter:
     def recieve_data(self, band_width: int, rects: list):
         self.model.process_data(band_width, rects)
         return self.model.solve()    # last population, not fittest
-
-
-
-pres = Presenter()
-pres.gui()

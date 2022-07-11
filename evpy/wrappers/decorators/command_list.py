@@ -2,7 +2,7 @@ from evpy.genetic_operators.recombination.crossover import single_point_crossove
     multi_point_crossover, shuffler_crossover, single_point_rsc
 from evpy.genetic_operators.recombination.rvrecombination import intermediate_recombination, \
     linear_recombination
-from evpy.genetic_operators.recombination.discrete import discrete_recombination
+from evpy.genetic_operators.recombination.discrete import discrete_recombination, discrete_unique
 from evpy.genetic_operators.mutators.bimutators import point_mutation, group_mutation, density_mutation, \
     exchange_mutation
 from evpy.genetic_operators.mutators.rvmutators import real_valued_mutation
@@ -28,7 +28,8 @@ class CommandList:
                               "intermediate_recombination": intermediate_recombination,
                               "linear_recombination": linear_recombination,
 
-                              "discrete": discrete_recombination
+                              "discrete": discrete_recombination,
+                              "discrete_unique": discrete_unique
                               },
 
             "mutation": {"point_mutation": point_mutation,
