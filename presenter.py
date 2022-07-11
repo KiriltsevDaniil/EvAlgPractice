@@ -46,7 +46,7 @@ class Presenter:
         self.View.receive_population(population)
 
     def get_band_width(self):
-        return Model.get_band_width()
+        return self.Model.get_band_width()
 
 pres = Presenter()
 pres.run()
