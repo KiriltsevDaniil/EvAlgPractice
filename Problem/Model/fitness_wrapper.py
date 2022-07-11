@@ -1,3 +1,4 @@
+from types import coroutine
 from evpy.wrappers.decorators.command import Command
 
 from Problem.Model.solution import Solution
@@ -20,9 +21,9 @@ class Fitness(Command):
         self.decode = decode
 
     def fitness(self, individual: Solution):
-        length, free_area = self.decode(individual.get_genotype())
-
+        length, free_area, coordinates = self.decode(individual.get_genotype())
         individual.set_length(length)
         individual.set_waste(free_area)
+        individual.set_coordinates(coordinates)
 
         return length + free_area * self.free_area_dim

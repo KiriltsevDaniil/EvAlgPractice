@@ -73,7 +73,7 @@ class Solver(Classic):
 
         return self._get_memory()
 
-    def memory_update(self, weighted_pop: list[Solution], t: int) -> None:
+    def memory_update(self, weighted_pop, t: int) -> None:
         fittest, fitness = weighted_pop[0].get_genotype(), weighted_pop[0].get_fitness()
 
         if self._get_fittest() is None and self._get_max_fitness() is None:
