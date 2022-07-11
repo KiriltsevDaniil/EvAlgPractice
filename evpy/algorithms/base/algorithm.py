@@ -33,7 +33,7 @@ class Algorithm:
     def _set_max_fitness(self, value: int):
         self.__max_fitness = value
 
-    def _add_to_memory(self, value: list):
+    def _add_to_memory(self, value):
         self.__memory.append(value)
 
     def _get_memory(self):

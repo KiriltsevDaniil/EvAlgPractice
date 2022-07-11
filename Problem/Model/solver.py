@@ -86,4 +86,4 @@ class Solver(Classic):
             self._set_max_fitness(fitness)
 
         self._set_current(weighted_pop)
-        self._add_to_memory([Population(weighted_pop), t])
+        self._add_to_memory(Population(weighted_pop, t))
