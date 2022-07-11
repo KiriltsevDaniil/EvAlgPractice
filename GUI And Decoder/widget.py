@@ -32,6 +32,9 @@ class Widget(QWidget):
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
         self.drawTest()
+        self.DrawField = QGraphicsScene()
+        self.DrawFieldView.setScene(self.DrawField)
+        self.drawMut()
 
     def load_ui(self):
         #
@@ -52,11 +55,11 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
+        self.MutBtn = self.findChild(QPushButton, 'MutBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
-        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
 
@@ -64,6 +67,7 @@ class Widget(QWidget):
         self.ExitBtn.clicked.connect(self.close)
         self.TrayBtn.clicked.connect(self.showMinimized)
         self.HelpBtn.clicked.connect(self.help)
+        self.MutBtn.clicked.connect(self.mutationfunc)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
         self.ImportBtn.clicked.connect(self.importFile)
@@ -119,6 +123,22 @@ class Widget(QWidget):
         self.HelpDialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.HelpDialog.hide()
         #
+        # Set Mutation illustration
+        #
+        path = os.fspath(Path(__file__).resolve().parent / "MutationWindow.ui")
+        ui_file = QFile(path)
+        ui_file.open(QFile.ReadOnly)
+        self.MutationWindow = loader.load(ui_file, self)
+        ui_file.close()
+
+        self.DrawFieldView = self.MutationWindow.findChild(QGraphicsView, 'DrawField')
+        self.MutationWindow.DrawBtn = self.MutationWindow.findChild(QPushButton, 'DrawBtn')
+        self.MutationWindow.DrawBtn.clicked.connect(self.drawMut)
+        self.MutationWindow.CloseBtn = self.MutationWindow.findChild(QPushButton, 'CloseBtn')
+        self.MutationWindow.CloseBtn.clicked.connect(self.MutationWindow.reject)
+        self.MutationWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.MutationWindow.hide()
+        #
         # Other stuff
         #
         self.setWindowTitle('Stock problem')
@@ -135,6 +155,7 @@ class Widget(QWidget):
         self.HelpDialog.move(250, 250)
         self.FirstDialog.move(250, 250)
         self.SecondDialog.move(250, 250)
+        self.MutationWindow.move(250, 250)
 
     def appendStringToLog(self, line):
         Time = datetime.now()
@@ -200,6 +221,11 @@ class Widget(QWidget):
         self.HelpDialog.exec_()
         self.HelpBtn.setEnabled(True)
 
+    def mutationfunc(self):
+        self.MutBtn.setEnabled(False)
+        self.MutationWindow.exec_()
+        self.MutBtn.setEnabled(True)
+
     def importFile(self):
         filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
 
@@ -242,6 +268,15 @@ class Widget(QWidget):
     def drawTest(self):
         self.Canvas.addRect(0, 0, 500, 100)
         self.Canvas.addRect(0, 50, 50, 50)
+
+
+    def drawMut(self):
+        x, y, w, h = 20, 10, 10, 10
+        n=10
+        for i in range(n):
+            x+= 10
+            y+= 5
+            self.DrawField.addEllipse(x, y, w, h, pen=QPen(), brush=QBrush())
 
 if __name__ == "__main__":
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)

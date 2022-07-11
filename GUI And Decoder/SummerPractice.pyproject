@@ -1,3 +1,3 @@
 {
-    "files": ["SpinBox.py","form.ui","SecondDialog.ui","resource.qrc","help.ui","widget.py","VariableLine.py","decoder.py","FirstDialog.ui","CollapsibleBox.py"]
+    "files": ["SpinBox.py","resource.qrc","help.ui","decoder.py","VariableLine.py","SecondDialog.ui","widget.py","FirstDialog.ui","form.ui","CollapsibleBox.py","MutationWindow.ui"]
 }
