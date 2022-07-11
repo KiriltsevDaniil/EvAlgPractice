@@ -1,8 +1,9 @@
 # This Python file uses the following encoding: utf-8
 import os
-import sys
 from pathlib import Path
+import sys
 from datetime import datetime
+
 from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, QFileDialog, \
      QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, \
      QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
@@ -11,14 +12,14 @@ from PySide2.QtCore import QFile, QRegExp, QPoint, Qt
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
 
-from GUI.CollapsibleBox import CollapsibleBox
-from GUI.VariableLine import VariableLine
+from CollapsibleBox import CollapsibleBox
+from VariableLine import VariableLine
+
 
 
 class Widget(QWidget):
     def __init__(self):
         super(Widget, self).__init__()
-
         self.load_ui()
         appIcon = QIcon("icon3.png")
         self.setWindowIcon(appIcon)
@@ -31,6 +32,9 @@ class Widget(QWidget):
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
         self.drawTest()
+        self.DrawField = QGraphicsScene()
+        self.DrawFieldView.setScene(self.DrawField)
+        self.drawMut()
 
     def load_ui(self):
         #
@@ -51,23 +55,24 @@ class Widget(QWidget):
         self.ImportBtn = self.findChild(QPushButton, 'ImportBtn')
         self.HelpBtn = self.findChild(QPushButton, 'HelpBtn')
         self.ExitBtn = self.findChild(QPushButton, 'ExitBtn')
-        self.WResizeBtn = self.findChild(QPushButton, 'WResizeBtn')
+        self.MutBtn = self.findChild(QPushButton, 'MutBtn')
         self.TrayBtn = self.findChild(QPushButton, 'TrayBtn')
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
+        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
-        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
 
         # Add functionality
         self.ExitBtn.clicked.connect(self.close)
         self.TrayBtn.clicked.connect(self.showMinimized)
-        self.ImportBtn.clicked.connect(self.importFile)
         self.HelpBtn.clicked.connect(self.help)
+        self.MutBtn.clicked.connect(self.mutationfunc)
         self.RunBtn.clicked.connect(self.testfunc)
         self.StepBtn.clicked.connect(self.stepClicked)
         self.ImportBtn.clicked.connect(self.importFile)
+
         #
         # Set First Dialog UI
         #
@@ -119,11 +124,26 @@ class Widget(QWidget):
         self.HelpDialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.HelpDialog.hide()
         #
+        # Set Mutation illustration
+        #
+        path = os.fspath(Path(__file__).resolve().parent / "MutationWindow.ui")
+        ui_file = QFile(path)
+        ui_file.open(QFile.ReadOnly)
+        self.MutationWindow = loader.load(ui_file, self)
+        ui_file.close()
+
+        self.DrawFieldView = self.MutationWindow.findChild(QGraphicsView, 'DrawField')
+        self.MutationWindow.DrawBtn = self.MutationWindow.findChild(QPushButton, 'DrawBtn')
+        self.MutationWindow.DrawBtn.clicked.connect(self.drawMut)
+        self.MutationWindow.CloseBtn = self.MutationWindow.findChild(QPushButton, 'CloseBtn')
+        self.MutationWindow.CloseBtn.clicked.connect(self.MutationWindow.reject)
+        self.MutationWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.MutationWindow.hide()
+        #
         # Other stuff
         #
         self.setWindowTitle('Stock problem')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-
         self.StepBtn.setEnabled(False)
 
     def mousePressEvent(self, event):
@@ -136,9 +156,7 @@ class Widget(QWidget):
         self.HelpDialog.move(250, 250)
         self.FirstDialog.move(250, 250)
         self.SecondDialog.move(250, 250)
-
-    def set_model(self, model):
-        self.model = model
+        self.MutationWindow.move(250, 250)
 
     def appendStringToLog(self, line):
         Time = datetime.now()
@@ -204,9 +222,13 @@ class Widget(QWidget):
         self.HelpDialog.exec_()
         self.HelpBtn.setEnabled(True)
 
+    def mutationfunc(self):
+        self.MutBtn.setEnabled(False)
+        self.MutationWindow.exec_()
+        self.MutBtn.setEnabled(True)
+
     def importFile(self):
         filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
-
 
     def testfunc(self):
         self.RunBtn.setEnabled(False)
@@ -224,19 +246,19 @@ class Widget(QWidget):
                         if self.StepBox.isChecked():
                             self.StepBtn.setEnabled(True)
                             self.StepBtn.setFlat(False)
-                            self.StepBox.setEnabled(False)
-                            self.RunBtn.setText('Finish')
-                            self.inExecution = True
+                        self.StepBox.setEnabled(False)
+                        self.RunBtn.setText('Finish')
+                        self.inExecution = True
                         #
                         # run alg
-                        data = self.model(Width, RectWH)
+                        #
+                        self.setProgress(50)
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
             self.RunBtn.setEnabled(True)
             self.StepBox.setEnabled(True)
             self.RunBtn.setText('Run')
-            self.RunBtn.setEnabled(False)
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
@@ -248,7 +270,16 @@ class Widget(QWidget):
         self.Canvas.addRect(0, 0, 500, 100)
         self.Canvas.addRect(0, 50, 50, 50)
 
-if __name__=='__main__':
+
+    def drawMut(self):
+        x, y, w, h = 20, 10, 10, 10
+        n=10
+        for i in range(n):
+            x+= 10
+            y+= 5
+            self.DrawField.addEllipse(x, y, w, h, pen=QPen(), brush=QBrush())
+
+if __name__ == "__main__":
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv)
     widget = Widget()

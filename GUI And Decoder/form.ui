@@ -507,7 +507,7 @@ font: bold 15px;
   <widget class="QComboBox" name="AlgVersBox">
    <property name="geometry">
     <rect>
-     <x>134</x>
+     <x>240</x>
      <y>6</y>
      <width>72</width>
      <height>24</height>
@@ -732,6 +732,34 @@ font:  semibold 10px;</string>
      <string>Island</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="MutBtn">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>0</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+border: 1px solid black;
+background: #1D253D;
+color: white;
+font: bold 15px;
+}
+
+QPushButton:hover{
+border: 1px solid black;
+background: #262d42;
+color: white;
+font: bold 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Mutation</string>
+   </property>
   </widget>
  </widget>
  <resources/>

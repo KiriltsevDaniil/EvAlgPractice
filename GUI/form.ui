@@ -287,7 +287,7 @@ QScrollBar::sub-page:vertical
   <widget class="QPushButton" name="TrayBtn">
    <property name="geometry">
     <rect>
-     <x>1010</x>
+     <x>1040</x>
      <y>10</y>
      <width>31</width>
      <height>25</height>
@@ -504,31 +504,11 @@ font: bold 15px;
     <string>Help</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="WResizeBtn">
-   <property name="geometry">
-    <rect>
-     <x>1050</x>
-     <y>10</y>
-     <width>31</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">*{
-	color: white;
-	background: rgb(3, 4, 19);
-	border: 0px solid rgb(3, 4, 19);;
-}</string>
-   </property>
-   <property name="text">
-    <string>[ ]</string>
-   </property>
-  </widget>
   <widget class="QComboBox" name="AlgVersBox">
    <property name="geometry">
     <rect>
-     <x>129</x>
-     <y>5</y>
+     <x>240</x>
+     <y>6</y>
      <width>72</width>
      <height>24</height>
     </rect>
@@ -752,6 +732,34 @@ font:  semibold 10px;</string>
      <string>Island</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="MutBtn">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>0</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+border: 1px solid black;
+background: #1D253D;
+color: white;
+font: bold 15px;
+}
+
+QPushButton:hover{
+border: 1px solid black;
+background: #262d42;
+color: white;
+font: bold 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string>Mutation</string>
+   </property>
   </widget>
  </widget>
  <resources/>

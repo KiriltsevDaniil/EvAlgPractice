@@ -97,7 +97,9 @@ QScrollBar::sub-page:vertical
 3. Click on Run and check parametrs or change it
 4. Finish the GA or run the app step by step, using checkbox with tje following name
 
-The progress bar below buttons is indicating a state of GA. In order to change Variables click on each and scroll.
+The progress bar below buttons is indicating a state of GA. In order to change Variables click on each and scroll. Press Enter to save your changes.
+
+If you want to see crossing overs or mutation, you should use Mutations button 
 
  Enjoy, dude </string>
    </property>
