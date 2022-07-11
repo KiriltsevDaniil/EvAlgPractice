@@ -44,7 +44,7 @@ class Solver(Classic):
 
         while t < T:
 
-            self.notify(f"step {t}:\n")
+            self.notify(f"step {t + 1}:\n")
 
             self.memory_update(weighted_population, t)
 

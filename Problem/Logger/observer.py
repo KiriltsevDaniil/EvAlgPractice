@@ -16,3 +16,7 @@ class Observer:
 
     def get_logs(self):
         return self.__event_log
+
+    def clear_logs(self):
+        del self.__event_log
+        self.__event_log = []

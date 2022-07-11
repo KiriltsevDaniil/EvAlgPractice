@@ -111,6 +111,7 @@ class Model(Observer):
         max_length, rect_area = 0, 0
 
         self.rectangles = []
+        self.clear_logs()
 
         for i in range(1, len(rects), 2):
             self.rectangles.append(Rect(rects[i-1], rects[i]))
