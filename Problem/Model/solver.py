@@ -2,6 +2,7 @@ from evpy.algorithms.base.classic import Classic
 from evpy.wrappers.facade.kernel import Kernel
 
 from Problem.Model.solution import Solution
+from Problem.Model.population import Population
 
 from time import perf_counter
 from random import sample, random
@@ -12,39 +13,38 @@ class Solver(Classic):
         super().__init__(kernel, fitness, pop_size, gen_len)
 
         rectangles.sort(key=lambda x: x.get_height() * x.get_width(), reverse=True)
-
-        self.solution = Solution(rectangles)
+        self.rectangles = rectangles
 
     def evaluate(self, T: int =100, p_mut: float =.5, p_gene_mut: float =.5):
+
         starting_point = perf_counter()
         t = 0
+
         if self._get_current() is None:
-            # init_population = [sample([x for x in range(1, self._get_pop_size() + 1)], k=self._get_gen_length())
-            #                    for x in range(1, self._get_pop_size() + 2)]
 
             init_population = [[1] + sample([x for x in range(2, self._get_pop_size() + 1)],
                                 k=self._get_gen_length() - 1) for x in range(self._get_pop_size())]
-        else:
-            init_population = self._get_current()
 
-        weighted_pop = [[x, self._get_fitness()(x)] for x in init_population]
-        weighted_pop.sort(key=lambda x: x[1])
+            weighted_population = []
+            for index, genotype in enumerate(init_population):
+                individual = Solution(self.rectangles, genotype, index)
+                individual.set_fitness(self._get_fitness()(individual))
+
+                weighted_population.append(individual)
+        else:
+            weighted_population = self._get_current()
+
+        weighted_population.sort(key=lambda x: x.get_fitness())
+
         while t < T:
-            # print(f"Generation: {t}/{T}") if t % (T // 10) == 0 else None
-            self.memory_update(weighted_pop, t)
+
+            self.memory_update(weighted_population, t)
 
             # Choosing parents
-            parents = sample(self._get_kernel().parent_selection(weighted_pop), k=2)
-            parents = [[weighted_pop[parents[0]][0], parents[0]], [weighted_pop[parents[1]][0], parents[1]]]
-            self.solution.set_parents([parents[0][0], parents[1][0]])
-            parents = [[parents[0][0], parents[0][1], self._get_fitness()(parents[0][0])],
-                       [parents[1][0], parents[1][1], self._get_fitness()(parents[1][0])]]
-
-            print(f"parents: {parents}")
+            parents = sample(self._get_kernel().parent_selection(weighted_population), k=2)
 
             # Recombination
-            _, newborns = self._get_kernel().recombination(parents[0][0], parents[1][0])
-            print(f"kinder: {newborns}")
+            _, newborns = self._get_kernel().recombination(parents[0].get_genotype(), parents[1].get_genotype())
 
             # Mutation
             for individual in range(len(newborns)):
@@ -52,33 +52,38 @@ class Solver(Classic):
                     if random() <= p_mut else newborns[individual]
 
             # New population formation
-            weighted_pop[parents[0][1]], weighted_pop[parents[1][1]] = [newborns[0],
-                                                                        self._get_fitness()(newborns[0])], \
-                                                                       [newborns[1],
-                                                                        self._get_fitness()(newborns[1])]
+            newborn_1 = Solution(self.rectangles, newborns[0], parents[0].get_id())
+            newborn_1.set_fitness(self._get_fitness()(newborn_1))
+            newborn_1.set_parents([x.get_genotype() for x in parents])
 
-            weighted_pop.sort(key=lambda x: x[1])
-            population = [x[0] for x in weighted_pop]
-            self.solution.set_population(population)
-            self.solution.set_fittest(population[0])
-            self.solution.set_fitness(self._get_fitness()(self.solution.get_fittest()))
+            newborn_2 = Solution(self.rectangles, newborns[1], parents[1].get_id())
+            newborn_2.set_fitness(self._get_fitness()(newborn_2))
+            newborn_2.set_parents([x.get_genotype() for x in parents])
 
+            weighted_population[weighted_population.index(parents[0])] = newborn_1
+            weighted_population[weighted_population.index(parents[1])] = newborn_2
+
+            weighted_population.sort(key=lambda x: x.get_fitness())
             t += 1
 
-        self.memory_update(weighted_pop, t)
+        self.memory_update(weighted_population, t)
         ending_point = perf_counter()
         self._set_convergence_time(round(ending_point - starting_point, 2))
         print(f"Model took {self._get_convergence_time()} second(s) to converge. [Canonical Model]")
 
-        return self.solution
+        return self._get_memory()
 
-    def memory_update(self, weighted_pop: list, t: int) -> None:
-        fittest, fitness = weighted_pop[0]
+    def memory_update(self, weighted_pop: list[Solution], t: int) -> None:
+        fittest, fitness = weighted_pop[0].get_genotype(), weighted_pop[0].get_fitness()
+
         if self._get_fittest() is None and self._get_max_fitness() is None:
             self._set_fittest(fittest)
             self._set_max_fitness(fitness)
+
         elif fitness > self._get_max_fitness():
+
             self._set_fittest(fittest)
             self._set_max_fitness(fitness)
-        self._set_current([x[0] for x in weighted_pop])
-        self._add_to_memory([self._get_max_fitness(), t])
+
+        self._set_current(weighted_pop)
+        self._add_to_memory([Population(weighted_pop), t])

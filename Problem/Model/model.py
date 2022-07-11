@@ -8,7 +8,6 @@ from evpy.genetic_operators.selectors.parent_selection import random_couple
 
 from evpy.wrappers.facade.kernel_factory import KernelFactory
 from Problem.Model.solver import Solver
-from Problem.Model.solution import Solution
 
 
 class Model:
@@ -28,9 +27,9 @@ class Model:
 
     def solve(self):
         result = self.solver.evaluate(T=1)
-        length, waste = self.decode(result.get_fittest())
-        result.set_length(length)
-        result.set_waste(waste)
+        # length, waste = self.decode(result[0][0].get_fittest().get_genotype())
+        # result.set_length(length)
+        # result.set_waste(waste)
 
         return result
 
