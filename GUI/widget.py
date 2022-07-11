@@ -60,7 +60,6 @@ class Widget(QWidget):
         self.StepBtn = self.findChild(QPushButton, 'StepBtn')
         self.RunBtn = self.findChild(QPushButton, 'RunBtn')
         self.StepBox = self.findChild(QCheckBox, 'StepBox')
-        self.AlgVersBox = self.findChild(QCheckBox, 'AlgVersBox')
         self.PopulationBox = self.findChild(QScrollArea, 'PopulationBox')
         self.VariablesBox = self.findChild(QScrollArea, 'VariablesBox')
 
