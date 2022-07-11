@@ -2,7 +2,7 @@
 
 Инструкция по сборке и запуску. <br />
 Необходимо предустановить: Python 3.9, PySide2 (В скором времени напишем автоматическую проверку версий и подгрузку недостающих пакетов) <br />
-Из папки GUI запускается файл widget.py командой python3 widget.py <br />
+Из папки SummerPractice запускается файл widget.py командой python3 widget.py <br />
 
 ### GUI design on Figma [link](https://www.figma.com/file/rhlzg1rRNds243MWqzLXzw/GenAlg_UI?node-id=0%3A1)  <br />
 

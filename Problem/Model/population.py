@@ -2,7 +2,7 @@ from Problem.Model.cringe_solution import Solution
 
 
 class Population:
-    def __init__(self, population: list[Solution], era: int):
+    def __init__(self, population, era):
         self.__species = tuple(population)
 
         self.__fittest = 0
