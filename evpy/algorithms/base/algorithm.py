@@ -38,3 +38,7 @@ class Algorithm:
 
     def _get_memory(self):
         return self.__memory
+
+    def _clear_memory(self):
+        del self.__memory
+        self.__memory = []

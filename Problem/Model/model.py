@@ -24,12 +24,14 @@ class Model:
         
         self.T = 1
         self.p_mut = 0.5
-        self.p_gen_mut = 0.5 
+        self.p_gen_mut = 0.5
 
     def set_solver(self):
         builder = KernelFactory()
         _kernel = builder.build_kernel(exchange_mutation, discrete_unique, None, random_couple)
-        self.solver = Solver(_kernel, self.fitness, self.rectangles, len(self.rectangles), len(self.rectangles), )
+        self.solver = Solver(_kernel, self.fitness, self.rectangles, len(self.rectangles), len(self.rectangles))
+
+        self.solver._clear_memory()
 
     def solve(self):
         result = self.solver.evaluate(T=1)
@@ -108,6 +110,8 @@ class Model:
         self.band_width = band_width
         max_length, rect_area = 0, 0
 
+        self.rectangles = []
+
         for i in range(1, len(rects), 2):
             self.rectangles.append(Rect(rects[i-1], rects[i]))
             max_length += rects[i-1]
@@ -129,7 +133,7 @@ class Model:
         self.send_data = slot
 
     def get_parameters(self):
-        return {'T': [self.T, 1, 200, True], 'p_mut': [self.p_mut, 0.01, 1.0, False], 
+        return {'T': [self.T, 1, 200, True], 'p_mut': [self.p_mut, 0.01, 1.0, False],
                 'p_gen_mut': [self.p_gen_mut, 0.01, 1.0, False]}
     
     def set_parameter(self, key, val):
