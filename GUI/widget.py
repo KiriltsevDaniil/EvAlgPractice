@@ -25,6 +25,7 @@ class Widget(QWidget):
         self.inExecution = False
         self.testing = testing
         self.send_data = None
+        self.get_band_width = None
         self.change_parameter = None
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
@@ -272,6 +273,9 @@ class Widget(QWidget):
     def set_change_parameter(self, slot):
         self.change_parameter = slot
     
+    def set_get_band_width(self, slot):
+        self.get_band_width = slot
+    
     def changeParam(self, key, val):
         self.appendStringToLog(f"changeParam invoked: user wants to change this parameter: {key, val}")
         self.change_parameter(key, val)
@@ -283,6 +287,7 @@ class Widget(QWidget):
         #setPopulationBox
 
     def draw_solution(self, solution):
+        band_width = self.get_band_width()
         mlt = 10
         self.Canvas.clear()
         print(self.CanvasView.width(), self.CanvasView.height())

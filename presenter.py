@@ -16,6 +16,7 @@ class Presenter:
         self.View = Widget()
         
         self.View.set_send_data(self.view_to_model)
+        self.View.set_get_band_width(self.get_band_width)
         self.Model.set_send_data(self.model_to_view)
 
         self.View.set_change_parameter(self.change_parameter)
@@ -44,6 +45,8 @@ class Presenter:
     def model_to_view(self, population):
         self.View.receive_population(population)
 
+    def get_band_width(self):
+        return Model.get_band_width()
 
 pres = Presenter()
 pres.run()
