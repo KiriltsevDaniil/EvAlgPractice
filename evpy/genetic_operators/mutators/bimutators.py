@@ -20,13 +20,17 @@ def group_mutation(individual, p_mut=0.5):
 
 def density_mutation(individual, p_mut=0.2):
     for i in range(len(individual)):
-        if random() <= p_mut: individual[i] = individual[i] ^ 1
+        if random() <= p_mut:
+            individual[i] = individual[i] ^ 1
     return individual
 
 
 def exchange_mutation(individual, p_mut=0.5):
     if random() <= p_mut:
-        pivot = randint(1, len(individual) - 2)
-        individual[pivot - 1], individual[pivot + 1] = individual[pivot + 1], individual[pivot - 1]
+        if len(individual) == 2:
+            individual[0], individual[1] = individual[1], individual[0]
+        else:
+            pivot = randint(1, len(individual) - 2)
+            individual[pivot - 1], individual[pivot + 1] = individual[pivot + 1], individual[pivot - 1]
     return individual
     

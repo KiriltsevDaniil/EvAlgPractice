@@ -7,32 +7,32 @@ from evpy.algorithms.parallel.islandmodel_factory import IslandModelFactory
 
 island_factory = IslandModelFactory()
 parameters = [[100],
-              [1000, "point_mutation", "single_point_crossover"],
-              [500, "point_mutation", "single_point_crossover"]]
+              [100, "point_mutation", "single_point_crossover"],
+              [100, "point_mutation", "single_point_crossover"]]
 
-island_model = island_factory.make_island_model(parameters, lambda x: sum(x) + 1, 500)
+island_model = island_factory.make_island_model(parameters, lambda x: sum(x) + 1, 1000)
 
 
 canonical_factory = CanonicalFactory()
 genitor_factory = GenitorFactory()
 
-canonical = canonical_factory.build_canonical(fitness_function=lambda x: sum(x) + 1, pop_size=100, gen_len=500)
+canonical = canonical_factory.build_canonical(fitness_function=lambda x: sum(x) + 1, pop_size=100, gen_len=1000)
 
 
 genitor = genitor_factory.build_genitor(fitness_function=lambda x: sum(x)+1, recombinator="single_point_crossover",
-                                mutator="point_mutation", pop_size=100, gen_len=500)
+                                mutator="point_mutation", pop_size=100, gen_len=1000)
 
 def plot_transform(algorithm):
     return [[x[1] for x in algorithm._get_memory()], [x[0] for x in algorithm._get_memory()]]
 
 # Calculate
-print(f"Canonical: {canonical.evaluate(T=100, p_mut=.9, p_gene_mut=.7)}")
-print(f"Genitor: {genitor.evaluate(T=100, p_mut=.7, p_gene_mut=.9)}")
+print(f"Canonical: {canonical.evaluate(T=1000, p_mut=.9, p_gene_mut=.7)}")
+print(f"Genitor: {genitor.evaluate(T=1000, p_mut=.7, p_gene_mut=.9)}")
 
-print("Island Model: " + str(island_model.evaluate(10,
-    [100, .5, .5],
-    [100, .9, .7],
-    [100, .9, .9])))
+print("Island Model: " + str(island_model.evaluate(100,
+    [1000, .5, .5],
+    [1000, .9, .7],
+    [1000, .9, .9])))
 
 # Get convergence plot
 plt.subplot(121)

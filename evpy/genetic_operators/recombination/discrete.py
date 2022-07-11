@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, sample
 
 
 def discrete_recombination(parent1, parent2, n_children=2):
@@ -12,3 +12,9 @@ def discrete_recombination(parent1, parent2, n_children=2):
         children.append(child)
     parents = [parent1, parent2]
     return parents, children
+
+
+def discrete_unique(parent1, parent2):
+    offspring = [[parent1[0]] + sample(parent1[1:], k= len(parent1) - 1),
+    [parent2[0]] + sample(parent2[1:], k= len(parent1) - 1)]
+    return [parent1, parent2], offspring
