@@ -1,5 +1,7 @@
 from evpy.wrappers.decorators.command import Command
 
+from Problem.Model.solution import Solution
+
 
 class Fitness(Command):
     def __init__(self, rectangles: list, filled_area: int, free_dim: int, band_width: int, decode: callable,
@@ -17,7 +19,10 @@ class Fitness(Command):
 
         self.decode = decode
 
-    def fitness(self, genotype):
-        length, free_area = self.decode(genotype)
+    def fitness(self, individual: Solution):
+        length, free_area = self.decode(individual.get_genotype())
+
+        individual.set_length(length)
+        individual.set_waste(free_area)
 
         return length + free_area * self.free_area_dim
