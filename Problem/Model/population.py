@@ -1,6 +1,3 @@
-from Problem.Model.cringe_solution import Solution
-
-
 class Population:
     def __init__(self, population, era):
         self.__species = tuple(population)
