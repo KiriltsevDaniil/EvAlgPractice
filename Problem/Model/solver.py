@@ -16,7 +16,7 @@ class Solver(Classic):
         self.rectangles = rectangles
 
     def evaluate(self, T: int =100, p_mut: float =.5, p_gene_mut: float =.5):
-
+        flag = False
         self.notify("algorithm started")
 
         starting_point = perf_counter()
@@ -37,6 +37,7 @@ class Solver(Classic):
                 weighted_population.append(individual)
         else:
             weighted_population = self._get_current()
+            flag = True
 
         weighted_population.sort(key=lambda x: x.get_fitness())
 
@@ -45,9 +46,11 @@ class Solver(Classic):
         while t < T:
 
             self.notify(f"step {t + 1}:\n")
-
-            self.memory_update(weighted_population, t)
-
+            
+            if not flag:
+                self.memory_update(weighted_population, t)
+            if T > 1:
+                flag = False
             # Choosing parents
             parents = sample(self._get_kernel().parent_selection(weighted_population), k=2)
             self.notify(f"parents: [{parents[0].get_genotype()}, {parents[1].get_genotype()}]")
@@ -86,7 +89,7 @@ class Solver(Classic):
         self.memory_update(weighted_population, t)
         ending_point = perf_counter()
         self._set_convergence_time(round(ending_point - starting_point, 2))
-        print(f"Model took {self._get_convergence_time()} second(s) to converge. [Canonical Model]")
+        self.notify(f"Model took {self._get_convergence_time()} second(s) to converge. [Canonical Model]")
 
         return self._get_memory()
 

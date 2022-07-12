@@ -27,10 +27,12 @@ def density_mutation(individual, p_mut=0.2):
 
 def exchange_mutation(individual, p_mut=0.5):
     if random() <= p_mut:
-        if len(individual) == 2:
-            individual[0], individual[1] = individual[1], individual[0]
+        if len(individual) == 3:
+            individual[1], individual[2] = individual[2], individual[1]
+        elif len(individual) == 2:
+            return individual
         else:
-            pivot = randint(1, len(individual) - 2)
+            pivot = randint(2, len(individual) - 2) # changed for stock problem
             individual[pivot - 1], individual[pivot + 1] = individual[pivot + 1], individual[pivot - 1]
     return individual
     

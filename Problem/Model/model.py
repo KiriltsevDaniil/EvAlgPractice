@@ -37,7 +37,11 @@ class Model(Observer):
         self.solver.subscribe(self)
 
     def solve(self):
-        result = self.solver.evaluate(T=1)
+        result = self.solver.evaluate(self.T, self.p_mut, self.p_gen_mut)
+        self.send_data(result)
+
+    def solve_step(self, T = 1):
+        result = self.solver.evaluate(T, self.p_mut, self.p_gen_mut)
         self.send_data(result)
 
     def decode(self, genotype):
@@ -150,3 +154,6 @@ class Model(Observer):
     
     def get_band_width(self):
         return self.band_width
+    
+    def get_T(self):
+        return self.T

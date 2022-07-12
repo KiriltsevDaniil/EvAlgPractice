@@ -3,13 +3,14 @@ import os
 import sys
 from pathlib import Path
 from datetime import datetime
-from PySide2.QtWidgets import QApplication, QWidget, QMainWindow, QDialog, QPushButton, QGraphicsView, QGraphicsScene, \
-     QCheckBox, QProgressBar, QPlainTextEdit, QTreeView, QSystemTrayIcon, QSpinBox, QLineEdit, QFileDialog, \
-     QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
-from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush
+from PySide2.QtWidgets import QApplication, QWidget, QPushButton, QGraphicsView, QGraphicsScene, \
+     QCheckBox, QProgressBar, QPlainTextEdit, QSpinBox, QLineEdit, QFileDialog, \
+     QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
+from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush, QColor
 from PySide2.QtCore import QFile, QRegExp, QPoint, Qt, QFile
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
+from random import randint, random
 
 from GUI.CollapsibleBox import CollapsibleBox
 from GUI.VariableLine import VariableLine
@@ -25,6 +26,8 @@ class Widget(QWidget):
         self.inExecution = False
         self.testing = testing
         self.send_data = None
+        self.finish = None
+        self.step = None
         self.get_band_width = None
         self.change_parameter = None
         self.Canvas = QGraphicsScene()
@@ -143,12 +146,14 @@ class Widget(QWidget):
         self.Canvas.addRect(0, 0, 500, 100)
         self.Canvas.addRect(0, 50, 50, 50)
 
-    def appendStringToLog(self, line):
-        Time = datetime.now()
-        TimeForm = Time.strftime("%H:%M:%S")
-        log = f"[{TimeForm}] {line}"
-        print(f"appendStringToLog: '{line}'")
-        self.LogConsole.appendPlainText(log)
+    def appendStringToLog(self, line, timestamp = True):
+        if timestamp:
+            Time = datetime.now()
+            TimeForm = Time.strftime("%H:%M:%S")
+            log = f"[{TimeForm}] {line}"
+            self.LogConsole.appendPlainText(log)
+        else:
+            self.LogConsole.appendPlainText(line)
 
     def clearLog(self):
         self.LogConsole.clear()
@@ -156,16 +161,13 @@ class Widget(QWidget):
     def setProgress(self, percentage):
         self.ProgressBar.setValue(percentage)
 
-    def stepClicked(self):
-        self.appendStringToLog('step btn clicked')
-
     def setPopulationBox(self, populations): # list of populations
         content = QWidget()
         self.PopulationBox.setWidget(content)
         self.PopulationBox.setWidgetResizable(True)
         vlay = QVBoxLayout(content)
         # "Root" layer
-        population_number = 1
+        population_number = 0
         for population in populations:
             population_box = CollapsibleBox("Population {}".format(population_number))
             vlay.addWidget(population_box)
@@ -176,15 +178,13 @@ class Widget(QWidget):
             
             for solution in population.get_population():
                 if solution_number == 1:
-                    solution_box = CollapsibleBox(f"Solution {solution_number}", True)
+                    solution_box = CollapsibleBox(f"Solution {solution_number}", SolutionButton(solution, self.draw_solution),True)
                 else:
-                    solution_box = CollapsibleBox(f"Solution {solution_number}")
+                    solution_box = CollapsibleBox(f"Solution {solution_number}", SolutionButton(solution, self.draw_solution))
                 solution_lay = QVBoxLayout()
                 parents = solution.get_parents()
                 if parents is None:
                     parents = ['None', 'None']
-                showBtn = SolutionButton(solution, self.draw_solution)
-                solution_lay.addWidget(showBtn)
                 solution_labels = [QLabel(f"Length     {solution.get_length()}"),
                             QLabel(f"Waste      {solution.get_waste()}"),
                             QLabel(f"Parents:"),
@@ -241,16 +241,17 @@ class Widget(QWidget):
             Num = values[1]
             if len(RectWH) == Num * 2 and 0 not in RectWH and all(Width >= i for i in RectWH[1::2]):
                 self.RunBtn.setEnabled(True)
+                self.appendStringToLog('data sent from a file')
                 if self.StepBox.isChecked():
                     self.StepBtn.setEnabled(True)
                     self.StepBtn.setFlat(False)
                     self.StepBox.setEnabled(False)
                     self.RunBtn.setText('Finish')
                     self.inExecution = True
-                #
-                # run alg
-                self.send_data(Width, RectWH)
-                self.appendStringToLog('data sent from a file')
+                    self.appendStringToLog("Step By Step")
+                    self.send_data(Width, RectWH, True)
+                else:
+                    self.send_data(Width, RectWH)
             else:
                 self.appendStringToLog('Error: wrong file input')
 
@@ -268,6 +269,7 @@ class Widget(QWidget):
                     Num = self.FirstDialog.NumSpinBox.value()
                     if len(RectWH) == Num * 2 and 0 not in RectWH and all(Width >= i for i in RectWH[1::2]):
                         self.RunBtn.setEnabled(True)
+                        self.appendStringToLog('data sent')
                         if self.StepBox.isChecked():
                             self.StepBtn.setEnabled(True)
                             self.StepBtn.setFlat(False)
@@ -275,10 +277,10 @@ class Widget(QWidget):
                             self.RunBtn.setText('Finish')
                             self.ImportBtn.setEnabled(False)
                             self.inExecution = True
-                        #
-                        # run alg
-                        self.appendStringToLog('data sent')
-                        self.send_data(Width, RectWH)
+                            self.appendStringToLog("Step By Step")
+                            self.send_data(Width, RectWH, True)
+                        else:
+                            self.send_data(Width, RectWH)
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
@@ -287,16 +289,25 @@ class Widget(QWidget):
             self.RunBtn.setText('Run')
             self.RunBtn.setEnabled(False)
             self.ImportBtn.setEnabled(True)
+            self.finish()
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
             self.setProgress(0)
             self.appendStringToLog('finished')
         self.RunBtn.setEnabled(True)
-        self.appendStringToLog('execution ended')
     
+    def stepClicked(self):
+        self.step()
+
     def set_send_data(self, slot):
         self.send_data = slot
+    
+    def set_step(self, slot):
+        self.step = slot
+    
+    def set_finish(self, slot):
+        self.finish = slot
     
     def set_change_parameter(self, slot):
         self.change_parameter = slot
@@ -309,18 +320,24 @@ class Widget(QWidget):
         self.change_parameter(key, val)
 
     def receive_population(self, populations):
-        self.appendStringToLog("receive_population")
         self.setProgress(100)
         self.setPopulationBox(populations)
 
     def draw_solution(self, solution):
         band_width = self.get_band_width()
         mlt = 10
+        if band_width > solution.get_length():
+            mlt = (3/4) / (band_width / self.CanvasView.height()) 
+        else:
+            mlt = (3/4) / (solution.get_length() / self.CanvasView.width())
         self.Canvas.clear()
         self.Canvas.addRect(0, 0, solution.get_length() * mlt, -band_width * mlt)
+        self.Canvas.addLine(0, 0, solution.get_length() * mlt * 2, 0)
+        self.Canvas.addLine(0, -band_width * mlt, solution.get_length() * mlt * 2, -band_width * mlt)
         for crd in solution.get_coordinates():
+            random_brush = QBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
             print(f"crd: x={crd.get_x() * mlt}, y={crd.get_y() * mlt}, width{crd.get_width() * mlt}, height{crd.get_height() * mlt}")
-            self.Canvas.addRect(crd.get_x() * mlt, -(crd.get_y() * mlt), crd.get_width() * mlt, -(crd.get_height() * mlt))
+            self.Canvas.addRect(crd.get_x() * mlt, -(crd.get_y() * mlt), crd.get_width() * mlt, -(crd.get_height() * mlt), brush=random_brush)
         self.CanvasView.update()
             
         
