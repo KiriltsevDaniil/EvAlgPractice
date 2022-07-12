@@ -1,6 +1,6 @@
 from evpy.wrappers.decorators.command import Command
 
-from Problem.genetic_algorithm.solution import Solution
+from Task.genetic_algorithm.solution import Solution
 
 
 class Fitness(Command):

@@ -1,4 +1,4 @@
-from Problem.Model.model import Model
+from Task.Model.model import Model
 from GUI.widget import Widget
 
 from PySide2 import QtCore

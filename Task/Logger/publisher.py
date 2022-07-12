@@ -1,4 +1,4 @@
-from Problem.Logger.observer import Observer
+from Task.Logger.observer import Observer
 
 
 class Publisher(object):
