@@ -1,8 +1,8 @@
 from evpy.algorithms.base.classic import Classic
 from evpy.wrappers.facade.kernel import Kernel
 
-from Problem.genetic_algorithm.solution import Solution
-from Problem.genetic_algorithm.population import Population
+from Task.genetic_algorithm.solution import Solution
+from Task.genetic_algorithm.population import Population
 
 from time import perf_counter
 from random import sample, random

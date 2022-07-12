@@ -1,15 +1,15 @@
-from Problem.structures.rectangle import Rect
-from Problem.structures.rectangleCoordinates import rectangleCoordinates
-from Problem.genetic_algorithm.fitness_wrapper import Fitness
-from Problem.structures.front_line import FrontLine
+from Task.structures.rectangle import Rect
+from Task.structures.rectangleCoordinates import rectangleCoordinates
+from Task.genetic_algorithm.fitness_wrapper import Fitness
+from Task.structures.front_line import FrontLine
 
 from evpy.genetic_operators.mutators.bimutators import exchange_mutation
 from evpy.genetic_operators.recombination.discrete import discrete_unique
 from evpy.genetic_operators.selectors.parent_selection import random_couple
 
 from evpy.wrappers.facade.kernel_factory import KernelFactory
-from Problem.genetic_algorithm.solver import Solver
-from Problem.Logger.observer import Observer
+from Task.genetic_algorithm.solver import Solver
+from Task.Logger.observer import Observer
 import warnings
 
 

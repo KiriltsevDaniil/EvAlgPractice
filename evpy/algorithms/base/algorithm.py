@@ -1,4 +1,4 @@
-from Problem.Logger.publisher import Publisher
+from Task.Logger.publisher import Publisher
 
 
 def make_algorithm(fitness: callable):

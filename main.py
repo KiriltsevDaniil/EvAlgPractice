@@ -1,4 +1,4 @@
-from Problem.Presenter.presenter import Presenter
+from Task.Presenter.presenter import Presenter
 
 pres = Presenter()
 pres.run()
