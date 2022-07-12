@@ -1,7 +1,6 @@
-from types import coroutine
 from evpy.wrappers.decorators.command import Command
 
-from Problem.Model.solution import Solution
+from Problem.genetic_algorithm.solution import Solution
 
 
 class Fitness(Command):
