@@ -123,6 +123,10 @@ class Widget(QWidget):
         self.HelpDialog.CloseBtn.clicked.connect(self.HelpDialog.reject)
         self.HelpDialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.HelpDialog.hide()
+
+        self.HelpDialog.move(250, 250)
+        self.FirstDialog.move(250, 250)
+        self.SecondDialog.move(250, 250)
         #
         # Other stuff
         #
@@ -268,6 +272,7 @@ class Widget(QWidget):
                     Width = self.FirstDialog.WidthSpinBox.value()
                     Num = self.FirstDialog.NumSpinBox.value()
                     if len(RectWH) == Num * 2 and 0 not in RectWH and all(Width >= i for i in RectWH[1::2]):
+                        self.appendStringToLog(f"Input: Width = {Width}, Number of rectangles = {Num}\nRectangles: {RectWH}")
                         self.RunBtn.setEnabled(True)
                         self.appendStringToLog('data sent')
                         if self.StepBox.isChecked():

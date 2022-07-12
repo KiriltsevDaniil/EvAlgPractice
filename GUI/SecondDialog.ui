@@ -74,7 +74,7 @@ font: bold 25px;</string>
 }</string>
    </property>
    <property name="text">
-    <string>Set width and length for each rectangle</string>
+    <string>Set width and height for each rectangle</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="RectLine">
@@ -103,7 +103,7 @@ QLineEdit[text=&quot;&quot;]{
 </string>
    </property>
    <property name="placeholderText">
-    <string>W1 L1 W2 L2 W3 L3...</string>
+    <string>W1 H1 W2 H2 W3 H3...</string>
    </property>
   </widget>
  </widget>
