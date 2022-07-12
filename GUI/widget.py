@@ -13,7 +13,7 @@ from PySide2.QtUiTools import QUiLoader
 from random import randint
 
 from GUI.utility.CollapsibleBox import CollapsibleBox
-from GUI.VariableLine import VariableLine
+from GUI.utility.VariableLine import VariableLine
 from GUI.utility.SolutionBtn import SolutionButton
 
 class Widget(QWidget):
