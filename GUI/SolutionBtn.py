@@ -11,12 +11,12 @@ class SolutionButton(QPushButton):
         self.setStyleSheet('''QPushButton {
                                     border: 0px solid black;
                                     color: white;
-                                    font: bold;
+                                    font: bold italic;
                                     }
                                     QPushButton:hover{
                                     border: 0px solid black;
                                     color: #d9d9d9;
-                                    font: bold;
+                                    font: bold italic;
                                     }''')
     
     def show_solution(self):
