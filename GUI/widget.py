@@ -13,7 +13,7 @@ from PySide2.QtUiTools import QUiLoader
 
 from GUI.CollapsibleBox import CollapsibleBox
 from GUI.VariableLine import VariableLine
-
+from GUI.SolutionBtn import SolutionButton
 
 class Widget(QWidget):
     def __init__(self, testing=False):
@@ -25,6 +25,7 @@ class Widget(QWidget):
         self.inExecution = False
         self.testing = testing
         self.send_data = None
+        self.get_band_width = None
         self.change_parameter = None
         self.Canvas = QGraphicsScene()
         self.CanvasView.setScene(self.Canvas)
@@ -182,10 +183,14 @@ class Widget(QWidget):
                 parents = solution.get_parents()
                 if parents is None:
                     parents = ['None', 'None']
+                showBtn = SolutionButton(solution, self.draw_solution)
+                solution_lay.addWidget(showBtn)
                 solution_labels = [QLabel(f"Length     {solution.get_length()}"),
                             QLabel(f"Waste      {solution.get_waste()}"),
-                            QLabel(f"Parents    {parents[0]}, {parents[1]}")]
-                for j in range(3):
+                            QLabel(f"Parents:"),
+                            QLabel(f"{parents[0]}"),
+                            QLabel(f"{parents[1]}")]
+                for j in range(5):
                     solution_labels[j].setStyleSheet("color : white; font: bold; margin-left: 10px;")
                     solution_labels[j].setAlignment(QtCore.Qt.AlignLeft)
                     solution_lay.addWidget(solution_labels[j])
@@ -224,8 +229,30 @@ class Widget(QWidget):
         self.HelpBtn.setEnabled(True)
 
     def importFile(self):
-        filename, filter = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
-
+        filename, _ = QFileDialog.getOpenFileName(parent=self, caption='Import', dir='.', filter='*.txt')
+        if filename != '':
+            file = open(filename, 'r')
+            if file.closed:
+                self.appendStringToLog('Error reading file')
+                return
+            values = list(map(int, file.readlines()[0].split()))
+            RectWH = values[2:]
+            Width = values[0]
+            Num = values[1]
+            if len(RectWH) == Num * 2 and 0 not in RectWH and all(Width >= i for i in RectWH[1::2]):
+                self.RunBtn.setEnabled(True)
+                if self.StepBox.isChecked():
+                    self.StepBtn.setEnabled(True)
+                    self.StepBtn.setFlat(False)
+                    self.StepBox.setEnabled(False)
+                    self.RunBtn.setText('Finish')
+                    self.inExecution = True
+                #
+                # run alg
+                self.send_data(Width, RectWH)
+                self.appendStringToLog('data sent from a file')
+            else:
+                self.appendStringToLog('Error: wrong file input')
 
     def execute(self):
         self.RunBtn.setEnabled(False)
@@ -239,18 +266,19 @@ class Widget(QWidget):
                     RectWH = list(map(int, self.SecondDialog.RectLine.text().split()))
                     Width = self.FirstDialog.WidthSpinBox.value()
                     Num = self.FirstDialog.NumSpinBox.value()
-                    if len(RectWH) == Num * 2 and 0 not in RectWH:
+                    if len(RectWH) == Num * 2 and 0 not in RectWH and all(Width >= i for i in RectWH[1::2]):
                         self.RunBtn.setEnabled(True)
                         if self.StepBox.isChecked():
                             self.StepBtn.setEnabled(True)
                             self.StepBtn.setFlat(False)
                             self.StepBox.setEnabled(False)
                             self.RunBtn.setText('Finish')
+                            self.ImportBtn.setEnabled(False)
                             self.inExecution = True
                         #
                         # run alg
-                        self.send_data(Width, RectWH)
                         self.appendStringToLog('data sent')
+                        self.send_data(Width, RectWH)
                     else:
                         self.appendStringToLog('Error: wrong Rectangle Line input')
         else: # stop execution
@@ -258,6 +286,7 @@ class Widget(QWidget):
             self.StepBox.setEnabled(True)
             self.RunBtn.setText('Run')
             self.RunBtn.setEnabled(False)
+            self.ImportBtn.setEnabled(True)
             self.inExecution = False
             self.StepBtn.setFlat(True)
             self.StepBtn.setEnabled(False)
@@ -272,25 +301,27 @@ class Widget(QWidget):
     def set_change_parameter(self, slot):
         self.change_parameter = slot
     
+    def set_get_band_width(self, slot):
+        self.get_band_width = slot
+    
     def changeParam(self, key, val):
-        self.appendStringToLog(f"changeParam invoked: user wants to change this parameter: {key, val}")
+        self.appendStringToLog(f"User wants to change this parameter: {key, val}")
         self.change_parameter(key, val)
 
     def receive_population(self, populations):
         self.appendStringToLog("receive_population")
         self.setProgress(100)
         self.setPopulationBox(populations)
-        #setPopulationBox
 
     def draw_solution(self, solution):
+        band_width = self.get_band_width()
         mlt = 10
         self.Canvas.clear()
-        print(self.CanvasView.width(), self.CanvasView.height())
-        self.Canvas.addRect(0, 0, solution.get_length() * mlt, -10 * mlt)
-        #self.Canvas.addRect(0, 0, 5 * mlt, -6 * mlt)
+        self.Canvas.addRect(0, 0, solution.get_length() * mlt, -band_width * mlt)
         for crd in solution.get_coordinates():
             print(f"crd: x={crd.get_x() * mlt}, y={crd.get_y() * mlt}, width{crd.get_width() * mlt}, height{crd.get_height() * mlt}")
             self.Canvas.addRect(crd.get_x() * mlt, -(crd.get_y() * mlt), crd.get_width() * mlt, -(crd.get_height() * mlt))
+        self.CanvasView.update()
             
         
 

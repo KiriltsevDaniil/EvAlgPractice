@@ -147,3 +147,6 @@ class Model(Observer):
             self.p_gen_mut = val
         else:
             warnings.warn("Warning: model has no such parameter")
+    
+    def get_band_width(self):
+        return self.band_width
