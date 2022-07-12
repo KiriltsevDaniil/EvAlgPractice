@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QLabel, QHBoxLayout
 from PySide2 import QtCore
-from GUI.SpinBox import SpinBox, DoubleSpinBox
+from GUI.utility.SpinBox import SpinBox, DoubleSpinBox
 
 class VariableLine(QHBoxLayout):
     def __init__(self, key, val, min, max, func, integer = True):

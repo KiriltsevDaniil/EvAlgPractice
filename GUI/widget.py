@@ -5,16 +5,16 @@ from pathlib import Path
 from datetime import datetime
 from PySide2.QtWidgets import QApplication, QWidget, QPushButton, QGraphicsView, QGraphicsScene, \
      QCheckBox, QProgressBar, QPlainTextEdit, QSpinBox, QLineEdit, QFileDialog, \
-     QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout, QLabel # for Collapsible Box
-from PySide2.QtGui import QRegExpValidator, QIcon, QPen, QBrush, QColor
-from PySide2.QtCore import QFile, QRegExp, QPoint, Qt, QFile
+     QScrollArea, QVBoxLayout, QLabel # for Collapsible Box
+from PySide2.QtGui import QRegExpValidator, QIcon, QBrush, QColor
+from PySide2.QtCore import QRegExp, QPoint, QFile
 from PySide2 import QtCore
 from PySide2.QtUiTools import QUiLoader
-from random import randint, random
+from random import randint
 
-from GUI.CollapsibleBox import CollapsibleBox
+from GUI.utility.CollapsibleBox import CollapsibleBox
 from GUI.VariableLine import VariableLine
-from GUI.SolutionBtn import SolutionButton
+from GUI.utility.SolutionBtn import SolutionButton
 
 class Widget(QWidget):
     def __init__(self, testing=False):

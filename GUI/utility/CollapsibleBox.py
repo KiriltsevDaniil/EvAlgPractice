@@ -1,7 +1,5 @@
-from PySide2.QtWidgets import QWidget, QToolButton, QPushButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout # for Collapsible Box
+from PySide2.QtWidgets import QWidget, QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout # for Collapsible Box
 from PySide2 import QtCore
-from PySide2 import QtWidgets
-from GUI.SolutionBtn import SolutionButton
 
 
 class CollapsibleBox(QWidget):
