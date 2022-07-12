@@ -1,10 +1,14 @@
+from Problem.Logger.publisher import Publisher
+
+
 def make_algorithm(fitness: callable):
     return Algorithm(fitness)
 
 
 # Base to build any algorithm upon
-class Algorithm:
+class Algorithm(Publisher):
     def __init__(self, fitness: callable):
+        super(Algorithm, self).__init__()
         self.__get_fitness = fitness
 
         self.__memory = []
@@ -38,7 +42,3 @@ class Algorithm:
 
     def _get_memory(self):
         return self.__memory
-
-    def _clear_memory(self):
-        del self.__memory
-        self.__memory = []

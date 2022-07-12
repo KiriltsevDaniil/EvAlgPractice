@@ -9,10 +9,14 @@ from evpy.genetic_operators.selectors.parent_selection import random_couple
 
 from evpy.wrappers.facade.kernel_factory import KernelFactory
 from Problem.Model.solver import Solver
+from Problem.Logger.observer import Observer
 import warnings
 
-class Model:
+
+class Model(Observer):
     def __init__(self):
+        super().__init__()
+
         self.band_width = 0     # W
         self.free_area_dim = 0  # разряды площади оставшейся
         self.filled_area = 0
@@ -30,14 +34,10 @@ class Model:
         builder = KernelFactory()
         _kernel = builder.build_kernel(exchange_mutation, discrete_unique, None, random_couple)
         self.solver = Solver(_kernel, self.fitness, self.rectangles, len(self.rectangles), len(self.rectangles))
-
-        self.solver._clear_memory()
+        self.solver.subscribe(self)
 
     def solve(self):
         result = self.solver.evaluate(T=1)
-        # length, waste = self.decode(result[0][0].get_fittest().get_genotype())
-        # result.set_length(length)
-        # result.set_waste(waste)
         self.send_data(result)
 
     def decode(self, genotype):
@@ -111,6 +111,7 @@ class Model:
         max_length, rect_area = 0, 0
 
         self.rectangles = []
+        self.clear_logs()
 
         for i in range(1, len(rects), 2):
             self.rectangles.append(Rect(rects[i-1], rects[i]))
