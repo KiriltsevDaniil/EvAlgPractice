@@ -1,10 +1,11 @@
-from PySide2.QtWidgets import QWidget, QToolButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QLabel # for Collapsible Box
+from PySide2.QtWidgets import QWidget, QToolButton, QPushButton, QScrollArea, QSizePolicy, QFrame, QVBoxLayout, QHBoxLayout # for Collapsible Box
 from PySide2 import QtCore
 from PySide2 import QtWidgets
+from GUI.SolutionBtn import SolutionButton
 
 
 class CollapsibleBox(QWidget):
-    def __init__(self, title="", green=False, parent=None):
+    def __init__(self, title="", solution_btn=None, green=False, parent=None):
         super(CollapsibleBox, self).__init__(parent)
 
         self.rootBtn = QToolButton(text=title, checkable=True, checked=False)
@@ -25,7 +26,14 @@ class CollapsibleBox(QWidget):
         lay = QVBoxLayout(self)
         lay.setSpacing(0)
         lay.setContentsMargins(0, 0, 0, 0)
-        lay.addWidget(self.rootBtn)
+        
+        if solution_btn is not None:
+            n = QHBoxLayout()
+            n.addWidget(self.rootBtn)
+            n.addWidget(solution_btn)
+            lay.addLayout(n)
+        else:
+            lay.addWidget(self.rootBtn)
         lay.addWidget(self.contentArea)
 
         self.Animation.addAnimation(QtCore.QPropertyAnimation(self, b"minimumHeight"))
